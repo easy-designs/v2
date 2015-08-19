@@ -1,0 +1,117 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>Safari Enlarged Text + Generated Content Width Bug</title>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <meta http-equiv="Content-Language" content="en-us" />
+  <meta name="author" content="Aaron Gustafson (aaron at easy-designs dot net)" />
+  <meta name="MSSmartTagsPreventParsing" content="true" />
+  <meta name="ROBOTS" content="ALL" />
+  <meta name="Copyright" content="(CC) 1999-2005 Easy! Designs, LLC. Except where otherwise noted, this site is licensed under a Creative Commons License." />
+  <meta http-equiv="imagetoolbar" content="no" />
+  <meta name="Rating" content="General" />
+  <style type="text/css" media="screen">
+    body {
+      font: 80% "Trebuchet MS", Helvetica, Arial, sans-serif;
+    }
+    code {
+      font-size: 1.2em;
+    }
+    pre {
+      background: #ebebeb;
+      font-size: 1.2em;
+      margin: 10px 0;
+      padding: 10px 10px 0;
+      width: 450px;
+    }
+    dt {
+      font-size: 1.5em;
+      font-weight: bold;
+    }
+    dd dt {
+      font-size: 1.2em;
+    }
+    dd dd dt {
+      font-size: 1em;
+    }
+    dd {
+      padding-bottom: 10px;
+    }
+    dd dd dd {
+      margin: 0;
+      padding: 0;
+    }
+    #glossary {
+      border: 1px solid #999;
+      width: 200px;
+      margin: 10px 0;
+    }
+    #glossary dt,
+    #glossary dd {
+      display: inline;
+    }
+    #glossary dt:after {
+      content: '\00A0\2013\00A0';
+    }
+    #glossary dd:after {
+      content: '\A';
+      white-space: pre;
+    }
+  </style>
+</head>
+<body>
+  <h1>Safari Enlarged Text + Generated Content Width Bug</h1>
+  <p>When text is enlarged in Safari, generated content can cause text to be pushed outside of its bounding box.</p>
+  <dl>
+    <dt>Example</dt>
+    <dd>
+      <dl>
+        <dt>Style Applied</dt>
+        <dd><pre>
+#glossary {
+  border: 1px solid #999;
+  width: 200px;
+}
+#glossary dt,
+#glossary dd {
+  display: inline;
+}
+#glossary dt:after {
+  content: '\00A0\2013\00A0';
+}
+#glossary dd:after {
+  content: '\A';
+  white-space: pre;
+}
+        </pre></dd>
+        <dt><abbr title="eXtensible HyperText Markup Language">XHTML</abbr></dt>
+        <dd><pre>
+&#60;dl id=&#34;glossary&#34;&#62;
+  &#60;dt&#62;XHTML&#60;/dt&#62;
+  &#60;dd&#62;eXtensible HyperText Markup Language&#60;/dd&#62;
+  &#60;dt&#62;KB&#60;/dt&#62;
+  &#60;dd&#62;kilobytes&#60;/dd&#62;
+  &#60;dt&#62;PDF&#60;/dt&#62;
+  &#60;dd&#62;Portable Document Format&#60;/dd&#62;
+&#60;/dl&#62;
+        </pre></dd>
+        <dt>Working Example <em>(remember to enlarge your text)</em></dt>
+        <dd>
+          <dl id="glossary">
+            <dt>XHTML</dt>
+            <dd>eXtensible HyperText Markup Language</dd>
+            <dt>KB</dt>
+            <dd>kilobytes</dd>
+            <dt>PDF</dt>
+            <dd>Portable Document Format</dd>
+          </dl>
+        </dd>
+        <dt>Screenshot (Safari 1.3 with text enlarged one step)</dt>
+        <dd><img src="screenshot.png" width="230" height="102" alt="A screenshot of the error, taken in Safari 1.3 with text enlarged one step" /></dd>
+      </dl>
+    </dd>
+    <dt>Solution</dt>
+    <dd>None as of now&#8230;</dd>
+  </dl>
+</body>
+</html>

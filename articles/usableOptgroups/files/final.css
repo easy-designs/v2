@@ -1,0 +1,37 @@
+fieldset
+{
+  border: 0;
+  width: 400px;
+}
+label
+{
+  display: block;
+  font-weight: bold;
+  margin-bottom: 3px;
+}
+legend
+{
+  font-weight: bold;
+  margin: 0;
+  padding: 7px 0 0;
+  width: auto;
+}
+fieldset fieldset label
+{
+  font-size: .8em;
+}
+fieldset fieldset label.normal
+{
+  padding-top: 5px;
+  font-size: inherit;
+}
+label.small
+{
+  float: left;
+  width: 200px;
+}
+label.small select
+{
+  margin-top: 3pm;
+  width: 190px;
+}

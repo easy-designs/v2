@@ -1,0 +1,393 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>Untitled</title>
+  <meta http-equiv="content-type" content="text/html; charset=iso-8859-1" />
+  <meta http-equiv="Content-Language" content="en-us" />
+  <meta name="author" content="" />
+  <meta name="MSSmartTagsPreventParsing" content="true" />
+  <meta name="ROBOTS" content="ALL" />
+  <meta name="Copyright" content="Copyright (c) . All rights reserved." />
+  <meta http-equiv="imagetoolbar" content="no" />
+  <meta name="Rating" content="General" />
+  <link rel="stylesheet" title="one" type="text/css" media="screen" href="file1.css" />
+  <link rel="alternate stylesheet" title="two" type="text/css" media="screen" href="file2.css" />
+  <link rel="shortcut icon" type="image/ico" href="/images/favicon.ico" />
+  <script type="text/javascript" src="jsTrace.js"></script>
+  <script type="text/javascript" src="dom-drag.js"></script>
+  <script type="text/javascript" src="cssQuery-p.js"></script>
+  <script type="text/javascript">
+var gFSS = {
+  linkedCSS:      [],
+  activeCSS:      [],
+  buildList:      [],
+  connection:     false,
+  init:           function(){
+    if( !document.getElementsByTagName ||
+        !document.getElementById ||
+        !document.createElement ||
+        !document.createTextNode ) return;
+    this.connection = new this.XHConn();
+    if( !this.connection ) return;
+    gFSS.getActiveCSS();
+    gFSS.load();
+  },
+  load:           function(){
+    var arr = this.activeCSS;
+    var whenDone = function( http ){
+      var css, cssArr;
+      css    = http.responseText;
+      css    = gFSS.cleanCSS( css );
+      gFSS.getBuildList( css );
+      gFSS.build();
+    };
+    for( var i in arr ){
+      var src = this.getURI( arr[i].getAttribute( 'href' ) );
+      this.connection.connect( src, whenDone );
+    }
+  },
+  /*---------------------------------------------------------------
+                          CSS Functions
+  ---------------------------------------------------------------*/
+  getActiveCSS:   function(){
+    var links = document.getElementsByTagName( 'link' );
+    var linkNum = links.length;
+    for( var i=0; i < linkNum; i++ ){
+      if( links[i].getAttribute( 'rel' ).indexOf( 'style' ) != -1 ){
+        this.linkedCSS.push( links[i] );
+        if( !links[i].disabled ) this.activeCSS.push( links[i] );
+      }
+    }
+  },
+  switchCSS:      function( deactivate, activate ){
+    this.unload();
+    this.deactivateCSS( deactivate );
+    this.activateCSS( activate );
+    this.load();
+  },
+  activateCSS:    function( title ){
+    var arr = this.linkedCSS;
+    for( var i in arr ){
+      if( arr[i].getAttribute('title') &&
+          arr[i].getAttribute('title') == title ){
+        arr[i].disabled = false;
+        this.activeCSS.push( arr[i] );
+        break;
+      }
+    }
+  },
+  deactivateCSS:  function( title ){
+    var arr = this.activeCSS;
+    for( var i in arr ){
+      if( arr[i].getAttribute('title') &&
+          arr[i].getAttribute('title') == title ){
+        arr[i].disabled = true;
+        this.activeCSS.splice( i, 1 );
+        break;
+      }
+    }
+  },
+  build:          function(){
+    var arr = this.buildList;
+    var parent, posn, child, block, rule, a, b, v, q, f, s, t;
+    for( key in arr ){
+      var selector = key;
+      // get the parent and the position
+      var tempArr = selector.split( ':' );
+      parent = this.getElementBySelector( tempArr[0] );
+      posn   = tempArr[1]; // before or after
+      a  = '';
+      if( parent.length != 0 ){
+        block = arr[key];
+        if( block['-gfss-source'] != undefined ){
+          // set defaults for non-required params
+          b = '#ffffff';
+          v = 8;
+          q = 'high';
+          w = h = f = false;
+          for( rule in block ){
+            if( rule.indexOf( '-gfss-' ) != -1 ){
+              var tmprule = rule.replace( /^-gfss-(\s*)/, "$1");; // remove the '-gfss-'
+              switch( true ){
+                case ( tmprule == 'background-color' ): 
+                  b = block[rule];
+                  break;
+                case ( tmprule == 'flash-version' ): 
+                  v = block[rule];
+                  break;
+                case ( tmprule == 'quality' ): 
+                  q = block[rule];
+                  break;
+                case ( tmprule == 'flash-vars' ): 
+                  f = block[rule];
+                  break;
+                case ( tmprule == 'source' ): 
+                  s = block[rule].replace( /url\((.*?)\)/, "$1" );
+                  break;
+                case ( tmprule == 'width' ): 
+                  w = block[rule];
+                  break;
+                case ( tmprule == 'height' ): 
+                  h = block[rule];
+                  break;
+                default:
+                  break;
+              }
+            } else {
+              a = a + rule + ': ' + block[rule] + '; ';
+            }
+          }
+          child = this.newFlashObject( s, // source filename
+                                       b, // background color
+                                       q, // quality
+                                       f, // flash vars
+                                       v, // flash version
+                                       w, // width
+                                       h, // height
+                                       a  // applied styles
+                                     );
+        } else { // general content insert
+          if( block['content'].indexOf( 'url(' ) != -1 ){           // inserting an image
+            child = document.createElement( 'img' );
+            s = block['content'].replace( /url\((.*?)\)/, "$1" );
+            child.setAttribute( 'src', s );
+          } else {                                                  // inserting text
+            child = document.createElement( 'span' );
+            child.className = 'gFSS';
+            if( block['content'].indexOf( 'attr(' ) == -1 ){        // <- normal text
+              t = block['content'].replace( /^['"]{1}|['"]{1}$/g, '' );
+              child.appendChild( document.createTextNode( t ) );
+            } else {                                                // <- text with atts
+              t = block['content'].replace( /\s*(['"]{1})\s*attr\(\s*(.+?)\s*\)\s*['"]{1}\s*/g,
+                                            "$1+parent[e].getAttribute('$2')+$1" );
+              child.setAttribute( 'action', t );
+            }
+          }
+          for( rule in block ){                                     // get the rest of the CSS rules
+            if( rule != 'content' ){
+              a = a + rule + ': ' + block[rule] + '; ';
+            }
+          }
+        }
+        // apply the styles
+        child.setAttribute( 'style', a );
+        // add it
+        for( var e in parent ){
+          var this_child = child.cloneNode( true );
+          if( child.getAttribute( 'action' ) ){
+            this_child.appendChild( document.createTextNode( eval( child.getAttribute( 'action' ) ) ) )
+          }
+          if( posn == 'before' ){
+            parent[e].insertBefore( this_child, parent[e].firstChild );
+          } else {
+            parent[e].appendChild( this_child );
+          }
+          parent[e].className += ' gFSS-generated';
+        }
+      }
+    }
+  },
+  cleanCSS:       function( str ){
+    // remove returns and indenting whitespace
+    str = str.replace( /[\s]*([{}:;]{1})*[\s]{2,}/g,  "$1");
+    // remove extraneous whitespace around brackets & colons
+    str = str.replace( /[\s]?([{}:;]{1})+[\s]?/g,  "$1");
+    // strip comments
+    str = str.replace( /(.*?)\/\*.*?\*\/(.*?)/g, "$1$2" );
+    return str;
+  },
+  getBuildList:   function( str ){
+    // break it into an array by declaration block
+    var arr = str.split('}');
+    // remove the empty last element
+    if ( arr[arr.length-1] == '') arr.pop();
+    // parse the declaration blocks looking for -gFSS rules
+    // dropping any blocks without them
+    // create a new array from the remaining declarations,
+    var bArr, tempArr = [];
+    for( var key in arr ){
+      if( ( arr[key].indexOf(':before') != -1 ||
+            arr[key].indexOf(':after') != -1 ) &&
+            arr[key].indexOf('.gFSS-generated') == -1 ){
+        bArr = arr[key].split('{');
+        // using the selectors as the keys and the rules as the values
+        tempArr[bArr[0]] = bArr[1];
+      }
+    }
+    // break the individual rules into key/val pairs
+    var valHolder, rulesArr;
+    for( key in tempArr ){
+      valHolder = tempArr[key];
+      this.buildList[key] =  [];
+      rulesArr = valHolder.split(';');
+      for ( var rule in rulesArr ) {
+        rulesArr[rule] = rulesArr[rule].split(':');
+        this.buildList[key][rulesArr[rule][0]] = rulesArr[rule][1];
+      }
+    }
+    trace( "build list:\r"+dump( this.buildList ) );
+  },
+  getElementBySelector: function( selector ){
+    // use Dean Edward's CSS Query
+    return cssQuery( selector );
+  },
+  unload:         function(){
+    var ptrn = /gFSS/, junk = [], i;
+    var objs = document.getElementsByTagName('object');
+    for( i in objs ){
+      if( objs[i].className &&
+          objs[i].className.match( ptrn ) ){
+        junk.push( objs[i] );
+      }
+    }
+    for( i in junk ){
+      junk[i].parentNode.removeChild( junk[i] );
+    }
+  },
+  getURI:         function( src ){
+    // where are we now?
+    var protocol = window.location.protocol;
+    var host     = window.location.host;
+    var path     = window.location.pathname;
+    if ( src.indexOf('/') == 0 ) {             // absolute path
+      src = protocol + '//' + host + src;
+    } else {                                   // relative path
+      if( src.indexOf('./') == 0 ){
+        src = substring( src, 2 );
+      }
+      if( path.indexOf('/') != ( path.length-1 ) ){
+        var tmpArr = path.split('/');
+        tmpArr.pop();
+        path = tmpArr.join('/');
+      }
+      src = protocol + '//' + host + path +'/'+ src;
+    }
+    return src;
+  },
+  newFlashObject: function( s, b, q, f, v, w, h, a ){    /* s = source filename
+                                                            b = background color
+                                                            q = quality
+                                                            f = flash vars
+                                                            v = flash version
+                                                            w = width
+                                                            h = height
+                                                            a = applied styles */
+    var obj;
+    // fix the bg color if it is coupled
+    if ( b.length == 4 ) b = b.replace( /#(\w){1}(\w){1}(\w){1}/, "#$1$1$2$2$3$3" );
+    var b = ( b != 'transparent' ) ? b : '#ffffff';
+    // build the 1st object
+    obj = document.createElement('object');
+    if( w != false ) obj.setAttribute('width',  w);
+    if( h != false ) obj.setAttribute('height', h);
+    if( f != false ) obj.appendChild( this.buildParam( 'flashvars', f ) );
+    obj.appendChild( this.buildParam( 'movie',   s ) );
+    obj.appendChild( this.buildParam( 'quality', q ) );
+    obj.appendChild( this.buildParam( 'bgcolor', b ) );
+    if( b == 'transparent' ||
+        b == 'opaque' ) obj.appendChild( gFSS.buildParam( 'wmode', b ) );
+    // make a 2nd flash object
+    obj2 = obj.cloneNode( true );
+    // add the final atts to the 1st object
+    obj.className = 'gFSS';
+    obj.setAttribute( 'classid',
+                      'clsid:D27CDB6E-AE6D-11cf-96B8-444553540000' );
+    obj.setAttribute( 'codebase',
+                      'http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=8,0,0,0');
+    // wrap up the 2nd object
+    obj2.setAttribute( 'type', 'application/x-shockwave-flash' )
+    obj2.setAttribute( 'data', s );
+    obj2.appendChild( this.buildParam( 'pluginurl', 'http://www.macromedia.com/go/getflashplayer' ) );
+    // join 'em
+    obj.appendChild( obj2 );
+    return obj;
+  },
+  buildParam:     function( n, v ){
+    var param = document.createElement('param');
+    param.setAttribute('name',  n);
+    param.setAttribute('value', v);
+    return param;
+  },
+  XHConn:         function(){
+    var xmlhttp, complete = false;
+    try { xmlhttp = new ActiveXObject("Msxml2.XMLHTTP"); }
+    catch( e ){ try { xmlhttp = new ActiveXObject("Microsoft.XMLHTTP"); }
+      catch( e ){ try { xmlhttp = new XMLHttpRequest(); }
+        catch( e ){ xmlhttp = false; }
+      }
+    }
+    if (!xmlhttp) return null;
+    this.connect = function( uri, fnDone ){
+      if (!xmlhttp) return false;
+      complete = false;
+      try {
+        xmlhttp.open("GET", uri, true);
+        xmlhttp.onreadystatechange = function(){
+          if( xmlhttp.readyState == 4 && !complete ){
+              complete = true;
+              fnDone( xmlhttp );
+          }
+        };
+        xmlhttp.send('');
+      }
+      catch( z ){ return false; }
+      return true;
+    };
+    return this;
+  }
+}
+function trace( msg ){
+  if( typeof( jsTrace ) != 'undefined' ){
+    jsTrace.send( msg );
+  }
+}
+/**
+* Function : dump()
+* Arguments: The data - array,hash(associative array),object
+*    The level - OPTIONAL
+* Returns  : The textual representation of the array.
+* This function was inspired by the print_r function of PHP.
+* This will accept some data as the argument and return a
+* text that will be a more readable version of the
+* array/hash/object that is given.
+*/
+function dump( arr, level ){
+  var dumped_text = "";
+  if(!level) level = 0;
+  
+  //The padding given at the beginning of the line.
+  var level_padding = "";
+  for(var j=0;j<level+1;j++) level_padding += "    ";
+  
+  if( typeof(arr) == 'object' ){ //Array/Hashes/Objects
+    for( var item in arr ){
+      var value = arr[item];
+      if( typeof(value) == 'object' ){ //If it is an array,
+        dumped_text += level_padding + "'" + item + "' ...\n";
+        dumped_text += dump(value,level+1);
+      } else {
+        dumped_text += level_padding + "'" + item + "' => \"" + value + "\"\n";
+      }
+    }
+  } else { //Stings/Chars/Numbers etc.
+    dumped_text = "===>"+arr+"<===("+typeof(arr)+")";
+  }
+  return dumped_text;
+}
+  </script>
+</head>
+<body onload="gFSS.init();">
+<a href="#" onclick="gFSS.switchCSS( 'one', 'two' );">file1.css</a> | <a href="#" onclick="gFSS.switchCSS('two', 'one');">file2.css</a>
+
+<div id="content">
+<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi.</p>
+<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi.</p>
+<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi.</p>
+<p>Lorem ipsum dolor sit amet, <abbr title="Hyper TextMarkup Language">HTML</abbr> consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi.</p>
+<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi.</p>
+</div>
+<div id="sidebar">
+<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi.</p>
+</div>
+</body>
+</html>

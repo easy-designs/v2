@@ -1,0 +1,125 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>Example Page</title>
+  <meta http-equiv="content-type" content="text/html; charset=iso-8859-1" />
+  <meta http-equiv="Content-Language" content="en-us" />
+  <meta name="author" content="" />
+  <meta name="MSSmartTagsPreventParsing" content="true" />
+  <meta name="ROBOTS" content="ALL" />
+  <meta name="Copyright" content="Copyright (c) . All rights reserved." />
+  <meta http-equiv="imagetoolbar" content="no" />
+  <meta name="Rating" content="General" />
+  <style type="text/css" media="screen">
+    body
+    {
+      font: 80% "Trebuchet MS", Verdana, Helvetica, Arial, sans-serif;
+    }
+    code
+    {
+      font: 1.1em "Courier New", courier, monospace;
+    }
+    div.box
+    {
+      background:  url(topLeft.gif) top left no-repeat;
+      float: left;
+      margin: 0 0 10px;
+      max-height: 3000px;
+      max-width: 3000px;
+      padding: 0;
+    }
+    div.box div
+    {
+      background: url(topRight.gif) top right no-repeat;
+      padding: 0;
+    }
+    div.box div div
+    {
+      background: url(bottomLeft.gif) bottom left no-repeat;
+    }
+    div.box div div div
+    {
+      background: url(bottomRight.gif) bottom right no-repeat;
+      padding: 10px 10px 17px 15px;
+    }
+    div.box div div div div /* reset for any inner divs */
+    {
+      background: transparent;
+      padding: 0;
+    }
+    div.blue /*-------------------------------------Blue Box---------*/
+    {
+      background-color: #9cf;
+      color: #fff;
+    }
+    div.blue h1
+    {
+      color: #070;
+      margin: 0 0 .25em;
+    }
+    div.blue a, div.blue a:link, div.blue a:visited
+    {
+      border-bottom: 1px dotted #070;
+      color: #070;
+      text-decoration: none;
+    }
+    div.blue a:focus, div.blue a:hover
+    {
+      border-bottom-style: solid;
+    }
+    div.green /*-----------------------------------Green Box---------*/
+    {
+      background-color: #cfc;
+    }
+    div.green h1
+    {
+      color: #c73;
+      margin: 0 0 .25em;
+    }
+    div.green a, div.green a:link, div.green a:visited
+    {
+      border-bottom: 1px dotted #f71;
+      color: #f90;
+      text-decoration: none;
+    }
+    div.green a:focus, div.green a:hover
+    {
+      border-bottom-style: solid;
+    }
+    div.orange /*---------------------------------Orange Box---------*/
+    {
+      background-color: #fc9;
+      color: #555;
+    }
+    div.orange h1
+    {
+      color: #fff;
+      margin: 0 0 .25em;
+    }
+    div.orange a, div.orange a:link, div.orange a:visited
+    {
+      border-bottom: 1px dotted #fff;
+      color: #fff;
+      text-decoration: none;
+    }
+    div.orange a:focus, div.orange a:hover
+    {
+      border-bottom-style: solid;
+    }
+  </style>
+</head>
+<body>
+  <div class="box blue"><div><div><div>
+    <h1>This is an <code>&#60;h1&#62;</code></h1>
+    <div>This is a paragraph and it contains a <a href="#">link</a>.</div>
+  </div></div></div></div>
+  <div class="box green"><div><div><div>
+    <h1>This is an <code>&#60;h1&#62;</code></h1>
+    <div>This is another <code>&#60;div&#62;</code> inside, notice it has none of the features of the other <code>&#60;div&#62;</code>s. It also contains a <a href="#">link</a>.</div>
+  </div></div></div></div>
+  <div class="box orange"><div><div><div>
+    <h1>This is an <code>&#60;h1&#62;</code></h1>
+    <div>This is a paragraph and it contains a <a href="#">link</a>.</div>
+  </div></div></div></div>
+</body>
+</html>

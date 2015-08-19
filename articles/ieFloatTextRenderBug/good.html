@@ -1,0 +1,77 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>IE box model + float = duplicated text [Demo with fix applied]</title>
+  <meta name="description" content="" />
+  <meta name="keywords" content="" />
+  <style type="text/css" media="screen">
+    body {
+      font: 80% "Trebuchet MS", Arial, Helvetica, sans-serif;
+    }
+    form {
+      margin: 0;
+      padding: 0;
+    }
+    fieldset {
+      border: 0;
+      margin: 1em 0;
+      padding: 0;
+      width: 410px;
+    }
+    label {
+      display: block;
+      font-weight: bold;
+      margin-top: 7px;
+    }
+    legend {
+      color: #047cc1;
+      font-weight: bolder;
+    }
+    label input {
+      background: transparent;
+      border: 0;
+      display: inline;
+      width: auto;
+      position: relative;
+      top: 2px;
+    }
+    fieldset.radio legend {
+      font-size: 1em;
+      font-weight: bold;
+      margin: 5px 0 0;
+    }
+    fieldset.radio label {
+      color: #000;
+      font-weight: normal;
+      margin: 0 5px 0 0;
+      float: left;
+      width: 196px;
+    }
+    fieldset.y-n label {
+      width: auto;
+    }
+  </style>
+</head>
+<body>
+  <form id="request" action="#" method="post">
+    <fieldset class="wrapper">
+      <fieldset class="radio y-n">
+        <legend>Have you worked with a dealer previously?</legend>
+        <label><input type="radio" name="q1" value="Y" /> Yes</label>
+        <label><input type="radio" name="q1" value="N" checked="checked" /> No</label>
+      </fieldset>
+      <fieldset class="radio">
+        <legend>Which product line interests you most?</legend>
+        <label><input type="radio" name="q2" value="1" required="required" /> Color</label>
+        <label><input type="radio" name="q2" value="2" required="required" /> Digital <abbr title="Black &#38; White">B&#38;W</abbr></label>
+        <label><input type="radio" name="q2" value="3" required="required" /> <abbr title="facsimile machine">Fax</abbr></label>
+        <label><input type="radio" name="q2" value="4" required="required" /> Production Print/Color</label>
+        <label><input type="radio" name="q2" value="5" required="required" /> Production Print/<abbr title="Black &#38; White">B&#38;W</abbr></label>
+        <label><input type="radio" name="q2" value="6" required="required" /> Multifunctional/Color</label>
+        <label><input type="radio" name="q2" value="7" required="required" /> Multifunctional/<abbr title="Black &#38; White">B&#38;W</abbr></label>
+        <label><input type="radio" name="q2" value="8" required="required" /> Software Solutions</label>
+      </fieldset>
+    </fieldset>
+  </form>
+</body>
+</html>

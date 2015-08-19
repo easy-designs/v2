@@ -1,0 +1,452 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<title>More usability frosting for your accessible cake</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <meta http-equiv="Content-Language" content="en-us" />
+</head>
+
+<body>
+<div id="content">
+<h1>More usability frosting for your accessible cake</h1>
+<h3>by Aaron Gustafson</h3>
+<p><abbr lang="en" title="Macintosh">Mac</abbr> users are spoiled. It&#8217;s a fact we <acronym lang="en" title="Personal Computer">PC</acronym> folks have to live with. When it comes to usable interfaces, <abbr lang="en" title="Macintosh">Mac</abbr>s are so far ahead of <acronym lang="en" title="Personal Computer">PC</acronym>s. Even Microsoft <del>makes</del> <ins>made</ins> better products for <abbr lang="en" title="Macintosh">Mac</abbr> than <acronym lang="en" title="Personal Computer">PC</acronym>. A perfect example of this is the truly elegant interface for <code>&#60;select&#62;</code> boxes using <code>&#60;optgroup&#62;</code> tags. Take <a href="files/1.html">this simple form</a>, for example. In Internet Explorer for <abbr lang="en" title="Macintosh">Mac</abbr>, the <code>&#60;optgroup&#62;</code>s create a list, through which you can navigate their associated <code>&#60;option&#62;</code>s:</p>
+
+<img src="images/macIE.jpg" alt="A screen capture of Internet Explorer (version 5.2) for the Mac, showing how elegantly it displays &#60;select&#62; boxes organized by &#60;optgroup&#62;s." width="374" height="275" />
+
+<p>Compare that to the same <code>&#60;select&#62;</code> in Firefox for Windows:</p>
+
+<img src="images/firefoxPC.jpg" width="158" height="299" alt="A screen capture of Firefox (version 0.9.2) for PC, showing its very unimpressive user interface." />
+
+<p>The difference is striking.</p>
+
+<p>That the <abbr lang="en" title="Macintosh">Mac</abbr> <acronym lang="en" title="Internet Explorer">IE</acronym> implementation of such a <code>&#60;select&#62;</code> box is the most usable way to display the information is not  much of a question. The user is not forced to digest a long list of options at one time and can easily navigate their way through the choices.</p>
+
+<p>Designers and developers looking for an easier way for users to digest this information have turned to JavaScript, but the problem is that <a href="http://javascript.internet.com/forms/category-form-script.html">scripts</a> <a href="http://javascript.internet.com/forms/auto-drop-down.html">like</a> <a href="http://javascript.internet.com/forms/country.html">these</a> are not as accessible, don&#8217;t explicitly indicate the relationship between the groupings and their associated options and don&#8217;t work for users with JavaScript disabled.</p>
+
+<p>So how do we make the interface for this form element more useable without falling into the trappings of the scripts above? The idea is this: leave the <abbr lang="en" title="eXtensible HyperText Markup Language">XHTML</abbr> as it is and run some JavaScript when the page loads to break this up into two related <code>&#60;select&#62;</code> boxes, one for the <code>&#60;optgroup&#62;</code>s and one for the associated <code>&#60;option&#62;</code>s for that group. The key features of this interface should be</p>
+
+<ul>
+  <li>all <code>&#60;optgroup&#62;</code>s need to be collected into one <code>&#60;select&#62;</code></li>
+  <li>all of the <code>&#60;option&#62;</code>s need to be collected and saved for later use in the second <code>&#60;select&#62;</code></li>
+  <li>choosing an <code>&#60;option&#62;</code> (in this case, a state or district) from the first <code>&#60;select&#62;</code> will cause the <code>&#60;option&#62;</code>s available in the second <code>&#60;select&#62;</code> to be updated appropriately</li>
+</ul>
+
+<p>In essense, we want what the scripts mentioned above offer us, but without risking leaving any user in the lurch. How do we do it? Get out you&#8217;re oven mits, we&#8217;re going to&#8230; </p>
+
+<h2>Bake a Cake</h2>
+
+<p>Some of you may remember <a href="http://www.alistapart.com/articles/eatcake/">my last article</a> for <cite class="magazine" title="A List Apart - For People Who Make Websites">A List Apart</cite>, in which I discussed separation of JavaScript into self-limiting functions which leave pages usable and accessible whether they run or not. This is yet another take on the same concept, but applied to a form.</p>
+
+<p>We start with our <a href="files/1.html">nice, clean <abbr lang="en" title="eXtensible HyperText Markup Language">XHTML</abbr> file</a>. As with <acronym lang="en" title="Cascading Style Sheets">CSS</acronym>, we can use hooks for JavaScript, so if we apply an <code>id</code> to the <code>&#60;fieldset&#62;</code>, we can address it via the <acronym lang="en" title="Document Object Model">DOM</acronym> and, thereby, reach the content within. Let&#8217;s give the <code>&#60;fieldset&#62;</code> a solid semantic <code>id</code>: &#8220;locationsSet&#8221;. The reason we are applying an <code>id</code> to the <code>&#60;fieldset&#62;</code> and aren&#8217;t just working with the <code>&#60;select&#62;</code> (which already has an <code>id</code>) will become clear shortly&#8230; patience.</p>
+
+<p>Now that <a href="files/2.html">we have a hook</a>, so we can start our JavaScript function (which we will call <code>splitOptgroupSelect()</code> so it&#8217;s generic), by finding the <code>&#60;fieldset&#62;</code> and the <code>&#60;select&#62;</code> we will be working with:</p>
+
+<pre>function splitOptgroupSelect()
+{
+  // get the fieldset 
+  // and the original select
+  var fieldsetObj = 
+      document.getElementById(&#34;locationsSet&#34;);
+  var originalSelect = 
+      document.getElementById(&#34;location&#34;);
+}</pre>
+
+<p>As we are using the built-in functionality of <code>document.getElementById()</code>, we should test to see if that will work in the browser before we execute it:</p>
+
+<pre>function splitOptgroupSelect()
+{
+  <strong>// make sure document.getElementById 
+  // is understood first
+  if (!document.getElementById) {
+    return null;
+  }</strong>
+  
+  // get the fieldset 
+  // and the original select
+  var fieldsetObj = 
+      document.getElementById(&#34;locationsSet&#34;);
+  var originalSelect = 
+      document.getElementById(&#34;location&#34;);
+}</pre>
+
+<p>OK, now we have the <code>&#60;fieldset&#62;</code> and the <code>&#60;select&#62;</code> as objects and we can go about collecting the <code>&#60;optgroup&#62;</code>s and their associated <code>&#60;option&#62;</code>s. This is accomplished by first breaking out the <code>&#60;optgroup&#62;</code>s into an array and then iterating through that array, collecting each element&#8217;s associated <code>&#60;option&#62;</code>s into a separate multi-dimensional array (<var>select2Options</var>). As we will be using <code>getElementsByTagName()</code>, we will need to add that to our initial test as well: </p>
+
+<pre>function splitOptgroupSelect()
+{
+  // make sure document.getElementById &#38; 
+  // document.getElementByTagName 
+  // are understood first
+  if (<strong>!document.getElementsByTagName &#38;&#38;</strong>
+      !document.getElementById) {
+    return null;
+  }
+  
+  // get the fieldset 
+  // and the original select
+  var fieldsetObj = 
+      document.getElementById(&#34;locationsSet&#34;);
+  var originalSelect = 
+      document.getElementById(&#34;location&#34;);
+<strong>  var select2Options = new Array;
+
+  // break out the optgroups into an array
+  var optgroups = 
+originalSelect.getElementsByTagName(&#34;optgroup&#34;);
+ 
+  // loop through the optgroup array
+  for(var i = 0; i &#60; optgroups.length; i++)
+  {
+    // take 1 optgroup at a time
+    var optgroup = optgroups[i];
+    
+    // extract the label
+    var label = optgroup.label;
+    // make an array to hold its options
+    select2Options[label] = new Array;
+    // collect the options into an array
+    var options = 
+        optgroup.getElementsByTagName(&#34;option&#34;);
+    // iterate through, collecting the info
+    // for each into a multi-dimensional
+    // array
+    for (j = 0; j &#60; options.length; j++)
+    {
+      select2Options[label][j] = new Array;
+      select2Options[label][j][&#34;value&#34;] = 
+        options[j][&#34;value&#34;];
+      select2Options[label][j][&#34;text&#34;] = 
+        options[j].innerHTML;
+    }
+  }</strong>
+}</pre>
+
+<p>This is all fine and dandy, but we actually aren&#8217;t doing anything with the <code>&#60;optgroup&#62;</code> info we&#8217;re collecting, so we need to take it and build the first of our two new <code>&#60;select&#62;</code>s.</p>
+
+<pre>function splitOptgroupSelect()
+{
+  &#8230;
+  
+  // break out the optgroups into an array
+  var optgroups = 
+fieldsetObj.getElementsByTagName(&#34;optgroup&#34;);
+  
+<strong>  // create the state select dropdown
+  var select1 = 
+      document.createElement(&#34;select&#34;);
+  // set the name
+  select1.setAttribute(&#34;name&#34;,&#34;locState&#34;);
+  // set the id
+  select1.setAttribute(&#34;id&#34;,&#34;locState&#34;);
+  
+  // create an empty first option
+  var emptyOption = 
+      document.createElement(&#34;option&#34;);
+  // set value = &#34;&#34;
+  emptyOption.setAttribute(&#34;value&#34;,&#34;&#34;);
+  // make it selected
+  emptyOption.setAttribute(&#34;selected&#34;,
+                           &#34;selected&#34;);
+  // set the text node value
+  emptyOption.innerHTML = &#34;Select a State&#34;;
+  // attach option to select
+  select1.appendChild(emptyOption);</strong>
+  
+  // loop through the optgroup array
+  for(var i = 0; i &#60; optgroups.length; i++)
+  {
+
+    &#8230;
+
+  }
+    
+<strong>    // create an option of this optgroup
+    var select1Option = 
+        document.createElement(&#34;option&#34;);
+    select1Option.setAttribute(&#34;value&#34;,label);
+    select1Option.innerHTML = label;
+        
+    // connect option to select
+    select1.appendChild(select1Option);</strong>
+  }
+}</pre>
+
+<p>Now we actually need to create the second <code>&#60;select&#62;</code> and append both of them to the <code>&#60;fieldset&#62;</code> (along with a helpful <code>&#60;legend&#62;</code> and <code>&#60;label&#62;</code>s for each field). To do this, we&#8217;ll build the tags and then append them to our <code>&#60;fieldset&#62;</code>. In order to run the script, however, we&#8217;ll need to add <code>splitOptgroupSelect()</code> to the <code>onload</code> event of the page.</p>
+
+<pre>function splitOptgroupSelect()
+{
+  &#8230;
+ 
+<strong>  // create a select for the locations
+  var select2 = 
+      document.createElement(&#34;select&#34;);
+  select2.setAttribute(&#34;name&#34;,&#34;location&#34;);
+  select2.setAttribute(&#34;id&#34;,&#34;location&#34;);
+  
+  // add a placeholder option & attach
+  var select2Option = 
+      document.createElement(&#34;option&#34;);
+  select2Option.setAttribute(&#34;value&#34;,label);
+  select2Option.setAttribute(&#34;selected&#34;,
+                             &#34;selected&#34;);
+  select2Option.innerHTML = &#34;&#60;--&#34;;
+  select2.appendChild(select2Option);
+  
+  // create the new legend
+  var newLegend = 
+      document.createElement(&#34;legend&#34;);
+  newLegend.innerHTML = 
+&#34;Restaurant Location &#60;em&#62;(if applicable)&#60;/em&#62;&#34;;
+  
+  // assign some state and location labels
+  var select1Label = 
+      document.createElement(&#34;label&#34;);
+  select1Label.innerHTML = &#34;State&#34;;
+  var select2Label = 
+      document.createElement(&#34;label&#34;)
+  select2Label.innerHTML = &#34;Location&#34;;
+  
+  // attach the selects to the labels
+  select1Label.appendChild(select1);
+  select2Label.appendChild(select2);
+  
+  // now append the fieldset 
+  // with our new content
+  fieldsetObj.appendChild(newLegend);
+  fieldsetObj.appendChild(select1Label);
+  fieldsetObj.appendChild(select2Label);</strong>
+}
+
+<strong>window.onload = function()
+{
+  splitOptgroupSelect();
+}</strong></pre>
+
+<p>Of course, we don&#8217;t want this script to run in <abbr lang="en" title="Macintosh">Mac</abbr> <acronym lang="en" title="Internet Explorer">IE</acronym> because that is the browser whose elegance we are trying to recreate. By including a very light (and reasonably trouble-free) browser detect script called <a href="http://www.dithered.com/javascript/browser_detect/index.html"><code>browserdetect_lite</code></a>, we can limit this functionality to only the less fortunate browsers, leaving <abbr lang="en" title="Macintosh">Mac</abbr> <acronym lang="en" title="Internet Explorer">IE</acronym> to work it&#8217;s magic in peace:</p>
+
+<pre>window.onload = function()
+{
+  if (!browser.isIEMac)
+  {
+    splitOptgroupSelect();
+  }
+}</pre>
+<p>Whoa, <a href="files/3.html">that&#8217;s not right</a>. We need to dump the old content before adding the new stuff. To make it easy to remove the content of an object, let&#8217;s write a generic function to do just that. We&#8217;ll call it <code>removeContents</code>&#8230;</p>
+<pre>function removeContents(thisObj)
+{
+  while (thisObj.firstChild)
+  {
+    thisObj.removeChild(thisObj.firstChild);
+  }
+}
+</pre>
+
+<p>&#8230;and apply it to the end of <code>splitOptgroupSelect()</code>:</p>
+
+<pre>  &#8230;
+ 
+  // now replace the existing content of 
+  // the fieldset with our new content
+<strong>  removeContents(fieldsetObj);
+</strong>  fieldsetObj.appendChild(newLegend);
+  fieldsetObj.appendChild(select1Label);
+  fieldsetObj.appendChild(select2Label);
+
+  &#8230;
+</pre>
+    <p><a href="files/4.html">That&#8217;s much better</a>. For the beauty&#8217;s sake, let&#8217;s apply a little style to get those two <code>&#60;select&#62;</code>s on the same line. We&#8217;ll apply a class of &#34;small&#34; to the <code>&#60;label&#62;</code> and define it and its child <code>&#60;select&#62;</code> as such:</p>
+<pre>label.small
+{
+  float: left;
+  width: 200px;
+}
+label.small select
+{
+  margin-top: 3pm;
+  width: 190px;
+}</pre>
+
+<p>Now we add a two little lines to our function&#8230;</p>
+
+<pre>  &#8230;
+ 
+  // assign some state and location labels
+  var select1Label = 
+      document.createElement(&#34;label&#34;);
+  select1Label.innerHTML = &#34;State&#34;;
+<strong>  select1Label.className = &#34;small&#34;;</strong>
+  var select2Label = 
+      document.createElement(&#34;label&#34;)
+  select2Label.innerHTML = &#34;Location&#34;;
+<strong>  select2Label.className = &#34;small&#34;;</strong>
+ 
+  &#8230;</pre>
+
+<p>&#8230;and it <a href="files/5.html">looks even better</a>.</p>
+
+<p>Now we need to make the <code>&#60;option&#62;</code>s populating the second <code>&#60;select&#62;</code> (&#8220;Location&#8221;) dependent on the selected <code>&#60;option&#62;</code> from the first <code>&#60;select&#62;</code>, but before we get to that, a little housekeeping is in order.</p>
+
+<h2>Mix batter until smooth</h2>
+<p>Not all browsers are equal, so there are a few lines we should add to our script to make sure it does not cause problems (much as we did when tested for support of <code>document.getElementById</code>). When dealing with a <a href="http://www.quirksmode.org/js/options.html">similar idea</a>, Peter Paul Koch pointed out that some older browsers may not be able to add and remove <code>&#60;option&#62;</code>s from a <code>&#60;select&#62;</code>. In order to make sure we can do what we want to, we run the following (slightly modified) test: </p>
+<pre>  &#8230;
+ 
+  // get the fieldset 
+  // and the original select
+  var fieldsetObj = 
+      document.getElementById(&#34;locationSet&#34;);
+  var originalSelect = 
+      document.getElementById(&#34;location&#34;);
+ 
+<strong>  // make sure we can add/remove 
+  //options - thanks PPK!
+  lgth = originalSelect.options.length - 1;
+  originalSelect.options[0] = null;
+  if (originalSelect.options[lgth])
+  {
+    return null;
+  }</strong>
+ 
+  // break out the optgroups into an array
+  var optgroups = 
+originalSelect.getElementsByTagName(&#34;optgroup&#34;);
+ 
+  &#8230;</pre>
+
+<p>In our original select, you may have noticed a &#8220;Not Applicable&#8221; option. This serves a dual purpose. Apart from being a good option to offer, in the code added above, we are testing our ability to remove an <code>&#60;option&#62;</code> from a <code>&#60;select&#62;</code> via JavaScript. The <code>&#60;option&#62;</code> we are removing is the &#8220;Not Applicable&#8221; one. As a successful run of this test will remove that <code>&#60;option&#62;</code>, we need a means of putting it back, which we do further on in the script:</p>
+
+<pre>  &#8230;
+ 
+  // create an empty first option
+  var emptyOption = 
+      document.createElement(&#34;option&#34;);
+  // set value = &#34;&#34;
+  emptyOption.setAttribute(&#34;value&#34;,&#34;&#34;);
+  // make it selected
+  emptyOption.setAttribute(&#34;selected&#34;,
+                           &#34;selected&#34;);
+  // set the text node value
+  emptyOption.innerHTML = &#34;Select A State&#34;;
+  // attach text to option &amp; option to select
+  select1.appendChild(emptyOption);
+
+<strong>  // make not applicable option
+  var naOption = 
+      document.createElement(&#34;option&#34;);
+  // set value = &#34;N/A&#34;
+  naOption.setAttribute(&#34;value&#34;,&#34;N/A&#34;);
+  // set the text node value
+  naOption.innerHTML = &#34;Not Applicable&#34;;
+  // attach text to option &amp; option to select
+  select1.appendChild(naOption);</strong>
+
+  &#8230;</pre>
+
+<p>One more problem we run into is that <acronym lang="en" title="Internet Explorer">IE</acronym> 5.x on Windows has problems (like I need to tell you). Basically, it balks on collecting <code>&#60;option&#62;</code>s within an <code>&#60;optgroup&#62;</code>. To deal with this bit of ridiculousness, we add the following lines into <code>splitOptgroupSelect</code> and the function will just end prematurely, leaving the original <code>&#60;select&#62;</code> with its lovely, accessible <code>&#60;optgroup&#62;</code>s intact:</p>
+
+<pre>  &#8230;
+ 
+    // extract the label
+    var label = optgroup.label;
+ 
+<strong>    // IE 5.x doesnot allow us to collect these 
+    // options so we need to stop
+    if
+(optgroup.getElementsByTagName(&#34;option&#34;).length 
+== 0)
+    {
+      return null;
+    }</strong>
+        
+    // make an array of its options
+    select2Options[label] = new Array;
+ 
+  &#8230;</pre>
+
+<p>Now that that&#8217;s taken care of, we can get back on track and add in some behavior.</p>
+<h2>Apply frosting between the layers for added richness </h2>
+<p>So we want to make the second <code>&#60;select&#62;</code> dependent on the first one. We&#8217;ve already collected the <code>&#60;option&#62;</code>s for each <code>&#60;optgroup&#62;</code> into an array, but there&#8217;s one problem, we need that information not to be limited to the <code>splitOptgroupSelect</code> function. So let&#8217;s move our variable declaration for <var>select2Options</var> outside the function:</p>
+
+<pre><strong>var select2Options = new Array;</strong>
+ 
+function splitOptgroupSelect()
+{
+  &#8230;
+</pre>
+
+<p>Now that the array of <code>&#60;option&#62;</code>s is being stored in a variable which can be accessed by every function we write, we can create a function to write out a list of <code>&#60;option&#62;</code>s for the second <code>&#60;select&#62;</code> based on the value of the selected <code>&#60;option&#62;</code> from the first:</p>
+
+<pre>function changeOptions()
+{
+  // find the first select<br />  var select1Obj = 
+      document.getElementById(&#34;locState&#34;);
+  // find the second select
+  var select2Obj = 
+      document.getElementById(&#34;location&#34;);
+  
+  // collect the value of the selected state
+  var select1SelectedOption = 
+select1Obj.options[select1Obj.selectedIndex].value;
+  
+  // get the array of options for it
+  var newOptions = new Array;
+  newOptions = 
+    select2Options[select1SelectedOption];
+  
+  // remove existing options from the select
+  removeContents(select2Obj);
+  
+  if (select1SelectedOption == &#34;N/A&#34;)
+  {
+    // make not applicable option
+    var newOption = 
+        document.createElement(&#34;option&#34;);
+    newOption.setAttribute(&#34;value&#34;,&#34;N/A&#34;);
+    newOption.setAttribute(&#34;selected&#34;,
+                           &#34;selected&#34;);
+    newOption.innerHTML = &#34;Not Applicable&#34;;
+    select2Obj.appendChild(newOption);
+  } else { // add a blank 1st option
+    var emptyOption = 
+        document.createElement(&#34;option&#34;);
+    emptyOption.setAttribute(&#34;value&#34;,&#34;&#34;);
+    // if the selected option is empty, 
+    // revert to the &#60;--
+    if (select1SelectedOption == &#34;&#34;)
+    {
+      emptyOption.innerHTML = &#34;&#60;--&#34;;
+    } else {
+      emptyOption.innerHTML = 
+        &#34;Select a Location&#34;;
+    }
+    select2Obj.appendChild(emptyOption);
+  }
+  if ((select1SelectedOption == &#34;&#34;) ||
+      (select1SelectedOption == &#34;N/A&#34;)) 
+      // there&#8217;s nothing else to do, stop now
+  {
+    return null;
+  }
+  
+  // attach the new options to the select
+  for (i = 0; i < newOptions.length; i++)
+  {
+    var newOption = 
+        document.createElement("option");
+    newOption.setAttribute("value",
+             newOptions[i]["value"]);
+    newOption.innerHTML = 
+      newOptions[i]["text"];
+    select2Obj.appendChild(newOption);
+  }
+}
+</pre>
+
+<p>Finally, we just add <code>changeOptions()</code> as a behavior to the <code>onchange</code> event for the first <code>&#60;select&#62;</code> and we&#8217;re <a href="files/6.html">almost there</a>. [Note: adding the behavior at the end of the <code>splitOptgroupSelect</code> function is <dfn lang="es" title="very important">muy importante</dfn> because if a browser bails on the function because it doesn&#8217;t know how to perform a necessary task (<acronym lang="la" title="&#8220;exempli gratia&#8221; meaning &#8220;for example&#8221;">e.g.</acronym> <code>document.getElementById</code>), you don&#8217;t have to worry about the behavior being applied anyway and wreaking havoc on your page.]</p>
+
+<h2>Cleaning Up</h2>
+<p>The final step in our journey (at least in this article) is to make the script a little more generic. Currently, we have a lot of hard-coded <code>id</code>s, text values, etc. scattered throughout our functions. By moving those values into global variables, we can use them anywhere and make this script set even more useful. Furthermore, we can add in an additional global variable which lets you decide whether or not you want to add back in that &#8220;Not Applicable&#8221; <code>&#60;option&#62;</code>. After all, you may not.</p>
+<p>We <a href="files/7.html">now have a page</a> which is not only usable and accessible, but uses functions generic enough that they can be moved to an <a href="files/optgroupSelect.js">external JavaScript file</a> so we only need to add a few lines of JavaScript to the head of our document to define the global variables for the page, further separating structure from behavior. <a href="files/final.html">Imagine that</a>. Tastes pretty good to me.</p>
+
+</div>
+</body>
+</html>

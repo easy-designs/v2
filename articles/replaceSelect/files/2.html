@@ -1,0 +1,108 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>Select Replacement Test</title>
+  <meta http-equiv="content-type" content="text/html; charset=iso-8859-1" />
+  <meta http-equiv="Content-Language" content="en-us" />
+  <meta name="author" content="Aaron Gustafson (aaron at easy-designs dot net)" />
+  <meta name="MSSmartTagsPreventParsing" content="true" />
+  <meta name="ROBOTS" content="ALL" />
+  <meta name="Copyright" content="Copyright (c) . All rights reserved." />
+  <meta http-equiv="imagetoolbar" content="no" />
+  <meta name="Rating" content="General" />
+  <style type="text/css">
+    body {
+      font: 80% "Trebuchet MS", verdana, helvetica, arial, sans-serif;
+    }
+    input {
+      display: block;
+      margin: 0 0 10px;
+      border: 1px solid #666;
+      color: #999;
+    }
+    legend {
+      font-size: 1.2em;
+      font-weight: bold;
+    }
+    label {
+      display: block;
+      font-weight: bold;
+      color: #666;
+    }
+    select {
+      display: block;
+      width: 300px;
+    }
+  </style>
+  <script type="text/javascript">
+    function selectReplacement(obj) {
+      // create list for styling
+      var ul = document.createElement('ul');
+      ul.className = 'selectReplacement';
+      var opts = obj.options;
+      for (var i=0; i<opts.length; i++) {
+        var selectedOpt;
+        if (opts[i].selected) {
+          selectedOpt = i;
+          break;
+        } else {
+          selectedOpt = 0;
+        }
+      }
+      for (var i=0; i<opts.length; i++) {
+        var li = document.createElement('li');
+        var txt = document.createTextNode(opts[i].text);
+        li.appendChild(txt);
+        if (i == selectedOpt) {
+          li.className = 'selected';
+        }
+        ul.appendChild(li);
+      }
+      // add the input and the ul
+      obj.parentNode.appendChild(ul);
+    }
+    function selectMe(obj) {
+      var lis = obj.parentNode.getElementsByTagName('li');
+      for (var i=0; i<lis.length; i++) {
+        if (lis[i] != obj) {
+          lis[i].className='';
+        } else {
+          lis[i].className='selected';
+        }
+      }
+    }
+    function setForm() {
+      var s = document.getElementsByTagName('select');
+      for (var i=0; i<s.length; i++) {
+        selectReplacement(s[i]);
+      }
+    }
+    window.onload = function() {
+      setForm();
+    }
+  </script>
+</head>
+<body>
+<h1>Select Replacement Test</h1>
+<form action="#" method="post">
+  <fieldset>
+    <legend>Sample Form</legend>
+    <label for="something">Select to Replace</label>
+    <select id="something" name="something">
+      <option value="1">This is option 1</option>
+      <option value="2">This is option 2</option>
+      <option value="3">This is option 3</option>
+      <option value="4">This is option 4</option>
+      <option value="5" selected="selected">This is option 5</option>
+      <option value="6">This is option 6</option>
+      <option value="7">This is option 7</option>
+      <option value="8">This is option 8</option>
+    </select>
+  </fieldset>
+</form>
+
+
+
+
+</body>
+</html>

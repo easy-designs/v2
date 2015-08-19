@@ -1,0 +1,262 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<title>Improving the Printed Page</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta http-equiv="Content-Language" content="en-us" />
+</head>
+<body>
+<div id="content">
+<h1>Improving the Printed Page</h1>
+<h3>By Aaron Gustafson</h3>
+<p>When I was nearing completion of my <a href="http://www.easy-designs.net/articles/replaceSelect2">last article</a>, I printed off a copy of it for my wife to proofread for me. As it was an article for publication online, I had written it in HTML and printed it from the test server, taking advantage of my trusty print style sheet to make it look right.</p>
+<p>About a page in, Kelly let out an annoyed sigh and posited &#8220;How do you expect me to read this with all of these <abbr title="Uniform Resource Locators">URLs</abbr> in the middle of everything?&#8221; It seems my zeal for linkage had come into conflict with my desire to improve print usability.</p>
+<p>What&#8217;s a developer/husband to do? Fix it, of course. And so I dedicate this article to Kelly: may she continue to proofread my articles unimpeded.</p>
+
+<h2>Eric Meyer&#8217;s Printed Page</h2>
+<p>Many moons ago, <a href="http://www.meyerweb.com">Eric Meyer</a> wrote <a href="http://www.alistapart.com/articles/goingtoprint/">a ground-breaking article</a> for <a href="http://www.alistapart.com">A List Apart</a>, in which he offered up a little <abbr title="Cascading Style Sheets Level 2">CSS2</abbr> nugget:</p>
+
+<pre><code>a:link:after,
+a:visited:after {
+  content: &#34; (&#34; attr(href) &#34;) &#34;;
+  font-size: 90%;
+}</code></pre>
+
+<p>Using this rule in a print style sheet will cause any browser that understands <abbr title="Cascading Style Sheets Level 2">CSS2</abbr> (<a href="http://www.mozilla.org/">Mozilla</a> &#38; <a href="http://www.netscape.com/">Netscape</a>, at the time, and most everything but <abbr title="Internet Explorer"><a href="http://www.microsoft.com/windows/ie/default.mspx">IE</a></abbr> now) to insert the value of an anchor&#8217;s <code>href</code> attribute, in-line, after the text, slightly smaller and flanked by parentheses:</p>
+<img alt="A sample of generated contentent from one link in a paragraph." src="images/GeneratedExample1.png" width="400" height="107" />
+<p>This is incredibly helpful for users who print the page, as it alerts them to the destination of each link. When you have a paragraph with a lot of links (especially long ones), however, this technique hinders readability:</p>
+<img alt="A sample of generated contentent from many links in a paragraph." src="images/GeneratedExample2.png" width="400" height="102" />
+<p>We can&#8217;t have that.</p>
+
+<h2>The plan</h2>
+<p>Having spent many years in academia and publishing, I&#8217;m partial to footnotes/endnotes. They are a standard convention in print, so it seems natural to go in that direction. Following this line of thinking, our objectives would be to</p>
+<ul>
+  <li>collect all of the <abbr title="Uniform Resource Indicators">URIs</abbr> referenced (<code>href</code>s and citations) in a specific container within the page (after all, we probably don&#8217;t want to grab the navigation, <abbr lang="la" title="et cetera meaning &#8220;and so forth&#8221;">etc.</abbr>),</li>
+  <li>place the links (minding the duplicates) into an ordered list which can be dropped into an <code>id</code>-ed container of our choosing, and</li>
+  <li>supply each reference with the corresponding footnote number as a superscript.</li>
+</ul>
+<p>Luckily, all of this is well within our grasp when we access the <abbr title="Document Object Model">DOM</abbr> via JavaScript.</p>
+
+<h2>The script</h2>
+<p>Before we start scripting, we should outline detailed directions for ourselves in the code:</p>
+
+<pre><code>function footnoteLinks() {
+  // get the container &#38; target
+
+  // create a heading for the footnotes
+  
+  // create an &#60;ol&#62; to contain the footnotes
+
+  // create an array to store used links so we can check for duplicates
+
+  // create a variable to keep track of the number used for each link, so we 
+  // have it for footnote references
+
+  // collect all of the elements in the specified container into an array
+
+  // cycle through the elements in that array, looking for hrefs and citations
+
+     // if a duplicate
+
+        // get the corresponding number from the array of used links
+
+     // if not a duplicate
+
+        // build the &#60;li&#62; and append to the &#60;ol&#62;
+
+        // store the link in the array
+
+        // increment the number variable
+
+     // build the &#60;sup&#62; &#38; append after the reference
+
+  // append the heading and &#60;ol&#62; to the target
+}</code></pre>
+
+<p>This provides a pretty solid foundation, so let&#8217;s get building. We&#8217;ll tackle each task separately, starting by examining the function itself. We need to pass it two variables: one for the <code>id</code> of container we are grabbing the <abbr title="Uniform Resource Indicators">URIs</abbr> from (<var>containerID</var>) and one for the <code>id</code> of the target container for our footnotes (<var>targetID</var>):</p>
+
+<pre><code>function footnoteLinks(containerID,targetID) {</code></pre>
+
+<p>Now that we&#8217;ve added those arguments, we can quickly identify those containers in our script:</p>
+
+<pre><code>// get the container &#38; target
+var container = document.getElementById(containerID);
+var target    = document.getElementById(targetID);</code></pre>
+
+<p>This will make things much simpler later on.</p>
+<p>The heading for our content is up next. As we want it (as well as the rest of our generated markup) to show up in print only, we&#8217;ll <code>class</code> it &#8220;printOnly&#8221; (we&#8217;ll write the <abbr title="Cascading Style Sheets">CSS</abbr> rule for this later):</p>
+
+<pre><code>// create a heading for the footnotes
+var h2     = document.createElement('h2');
+addClass.apply(h2,['printOnly']);
+var h2_txt = document.createTextNode('Links');
+h2.appendChild(h2_txt);</code></pre>
+
+<p>[Note: we are applying the <code>addClass()</code> function from the Easy! Designs <a href="http://www.easy-designs.net/code/jsUtilities/">jsUtilities package</a> to <code>class</code> our elements.]</p>
+<p>Now we can create our ordered list and those variables we need to help us keep track of what&#8217;s going on:</p>
+
+<pre><code>// create an &#60;ol&#62; to contain the footnotes
+var ol = document.createElement('ol');
+addClass.apply(ol,['printOnly']);
+
+// create an array to store used links
+// so we can check for duplicates
+var myArr = []; // to store all the links
+var thisLink;   // to store each link individually
+// create a variable to keep track of the number used for each link, so we 
+// have it for footnote references
+var num = 1;</code></pre>
+
+<p>Now for the heavy lifting. We need to iterate through all of the elements in the container, looking for <code>href</code> and <code>cite</code> attributes. It is good to note that in <abbr title="eXtensible HyperText Markup Language">XHTML</abbr> 2.0 we will be able to make anything a link and we can already put a <code>cite</code> attribute on almost anything, not just <code>&#60;blockquote&#62;</code>s and <code>&#60;q&#62;</code>s, so we should not restrict ourselves to only collecting anchors, block quotes and inline quotations:</p>
+
+<pre><code>// collect all of the elements in the specified container into an array
+var coll = container.getElementsByTagName('*');</code></pre>
+
+<p>Now we can loop through that collection, looking for <code>href</code> and <code>cite</code> attributes:</p>
+
+<pre><code>// cycle through the elements in that array, looking for hrefs and citations
+for (var i=0; i&#60;coll.length; i++) {
+  // check for our attributes
+  if ( coll[i].getAttribute('href') ||
+       coll[i].getAttribute('cite') ) {
+    // grab the reference
+    thisLink = coll[i].getAttribute('href') ? coll[i].href 
+                                            : coll[i].cite;</code></pre>
+
+<p>That looks good so far. Now we need to create our superscript:</p>
+
+<pre><code>    // build the &#60;sup&#62; &#38; append after the reference
+    var note = document.createElement('sup');
+    addClass.apply(note,['printOnly']);</code></pre>
+
+<p>We&#8217;re going to assume each <abbr title="Uniform Resource Indicator">URI</abbr> reference will be unique for now, revisiting the script later to check for duplicates:</p>
+
+<pre><code>    var note_txt = document.createTextNode(num);
+    note.appendChild(note_txt);</code></pre>
+
+<p>We&#8217;re also going to assume we are dealing with anything but <code>&#60;blockquote&#62;</code>s for right now and we&#8217;ll append the reference inline before the referencing element&#8217;s next sibling:</p>
+
+<pre><code>    coll[i].parentNode.insertBefore(note, coll[i].nextSibling);</code></pre>
+
+<p>We create a list item to contain the <abbr title="Uniform Resource Indicator">URI</abbr> and then push that <abbr title="Uniform Resource Indicator">URI</abbr> to the waiting array (so we can use it to reference duplicates):</p>
+
+<pre><code>    // build the &#60;li&#62; and append to the &#60;ol&#62;
+    var li     = document.createElement('li');
+    var li_txt = document.createTextNode(thisLink);
+    li.appendChild(li_txt);
+    ol.appendChild(li);
+    // store the link in the array
+    myArr.push(thisLink);</code></pre>
+
+<p>[Note: not all browsers natively support the <code>push</code> method, but you can help such unfortunate browsers deal by writing a script to define the method for them. It is also available in the <a href="http://www.easy-designs.net/code/jsUtilities/">jsUtilities package</a>.]</p>
+
+<p>Now we increment our number to prepare for the next reference and close the loop:</p>
+
+<pre><code>    // increment the number variable
+    num++;
+  }</code></pre>
+
+<p>Finally, we append our heading and list to the target:</p>
+
+<pre><code>  target.appendChild(h2);
+  target.appendChild(ol);
+}</code></pre>
+
+<p>We have a little tidying up to do before we wrap the script. First of all, we need to handle duplicate <abbr title="Uniform Resource Indicator">URI</abbr> references. We accomplish this by looking through that array (<var>myArr</var>) we created for keeping track of our used <abbr title="Uniform Resource Indicators">URIs</abbr>. We can do that with the JavaScript port of <abbr title="Hypertext PreProcessor">PHP</abbr>&#8217;s <code>inArray</code> function (also available in the <a href="http://www.easy-designs.net/code/jsUtilities/">jsUtilities package</a>). <code>inArray</code> looks for a value (needle) in whatever array (haystack) we apply it to and returns &#8220;true&#8221; (with the index value) if found and &#8220;false&#8221; if not found. We use it when we are looping through the collection:</p>
+
+<pre><code>for (var i=0; i&#60;coll.length; i++) {
+  if ( coll[i].getAttribute('href') || 
+       coll[i].getAttribute('cite') ) { 
+    thisLink = coll[i].getAttribute('href') ? coll[i].href 
+                                            : coll[i].cite;
+    var note = document.createElement('sup');
+    addClass.apply(note,['printOnly']);
+    var note_txt;
+<strong>    var j = inArray.apply(myArr,[thisLink]);
+    if ( j || j===0 ) { // if a duplicate
+      // get the corresponding number from the array of used links
+      note_txt = document.createTextNode(j+1);
+    } else { // if not a duplicate</strong>
+      // build the &#60;li&#62; and append to the &#60;ol&#62;
+      var li     = document.createElement('li');
+      var li_txt = document.createTextNode(thisLink);
+      li.appendChild(li_txt);
+      ol.appendChild(li);
+      // store the link in the array
+      myArr.push(thisLink);
+      note_txt = document.createTextNode(num);
+      // increment the number variable
+      num++;
+<strong>    }</strong>
+    note.appendChild(note_txt);
+    &#8230;
+  }
+}</code></pre>
+
+<p>In the snippet above, we are looking to see if <var>thisLink</var> is found in <var>myArr</var> and then handling the superscript accordingly. If <var>thisLink</var> is found (<var>j</var> is &#8220;true&#8221;), we make the superscript <var>j</var>+1 (as array indexing starts at 0 and ordered lists start at 1) and we&#8217;re done. If <var>thisLink</var> is not found (<var>j</var> is &#8220;false&#8221;), we need to create the list item for the reference, append it to the <code>&#60;ol&#62;</code>, push <var>thisLink</var> to <var>myArr</var>, and create our superscript reference (incrementing <var>num</var> afterwards). It is important to note that, as <code>inArray</code> returns the array index, the value of <var>j</var> could be 0 if it is the first item in the array. JavaScript will interpret this as false if we were to use the &#8220;is equal to&#8221; operator (<samp>j==0</samp>), so we use the &#8220;is identical to&#8221; operator (<samp>j===0</samp>) to be able to pick up duplication of the first <abbr title="Uniform Resource Indicator">URI</abbr> reference in a given page.</p>
+
+<p>The next step in tidying-up involves adding our reference in block-level elements. If you are making a block-level quote of some sort, to be truly semantic, it needs to be in a <code>&#60;blockquote&#62;</code>. Your <code>&#60;blockquote&#62;</code> could contain any type of block-level element, most commonly paragraphs (<code>&#60;p&#62;</code>) and lists (<code>&#60;ul&#62;</code>, <code>&#60;ol&#62;</code>, <code>&#60;dl&#62;</code>). Being that we would want to have our reference superscript appear at the end of the last line of text (to maintain common typographic style), we need to find the last child of the <code>&#60;blockquote&#62;</code> which is a text-containing block-level element. We can accomplish this with the function <code>lastChildContainingText</code> (you guessed it, in <a href="http://www.easy-designs.net/code/jsUtilities/">jsUtilities</a>):</p>
+
+<pre>
+function footnoteLinks(containerID,targetID) {
+  &#8230;
+<strong>  if (coll[i].tagName.toLowerCase() == 'blockquote') {
+    var lastChild = lastChildContainingText.apply(coll[i]);
+    lastChild.appendChild(note);
+  } else {</strong>
+    coll[i].parentNode.insertBefore(note, coll[i].nextSibling);
+<strong>  }</strong>
+  &#8230;
+}
+</pre>
+
+<p>Finally, we can round out our script by making it degrade gracefully in browsers that don&#8217;t support the methods we use in this function &#8211;</p>
+
+<pre><code>function footnoteLinks(containerID,targetID) {
+<strong>  if (!document.getElementById ||
+      !document.getElementsByTagName ||
+      !document.createElement) return false;</strong>
+  &#8230;
+}</code></pre>
+
+<p>&#8211; and pages that contain neither our target nor container elements:</p>
+
+<pre><code>function footnoteLinks(containerID,targetID) {
+  if (!document.getElementById ||
+      !document.getElementsByTagName ||
+      !document.createElement) return false;
+<strong>  if (!document.getElementById(containerID) ||
+      !document.getElementById(targetID)) return false;</strong>
+  &#8230;
+}</code></pre>
+
+<p>Now, we simply set the function to run on page load &#8211;</p>
+
+<pre><code>window.onload = function() {
+  footnoteLinks('container','container');
+}</code></pre>
+
+<p>&#8211; and create a style for <code>.printOnly</code> in our screen style sheet &#8211;</p>
+
+<pre><code>.printOnly {
+  display: none;
+}</code></pre>
+
+<p>&#8211; and you can <a href="files/1.html">see the finished product</a>.</p>
+
+<h2>Contingencies</h2>
+<p>This process, of course, assumes JavaScript is available for use, but what if it isn&#8217;t? To take this into account, we can keep Eric&#8217;s content generation <abbr title="Cascading Style Sheets">CSS</abbr> intact, using that as a fall-back to our script, and removing it when the script runs successfully.</p>
+<p>This is accomplished by retaining the original <abbr title="Cascading Style Sheets">CSS</abbr> declarations for generating the <code>href</code> content and then, when the script runs, we <code>class</code>-ify <code>&#60;html&#62;</code> as &#8220;noted.&#8221; We then add a rule to our print style sheet to disable the content generation when the links in question are descendants of <code>html.noted</code>:</p>
+
+<pre><code>html.noted a:link:after,
+html.noted a:visited:after {
+  content: &#34;&#34;;
+}</code></pre>
+
+<h2>Wrapping up</h2>
+<p>So there you have it, <a href="files/final.html">a nice, clean, printable document</a> with all links and citations collected into footnotes. Use it, enjoy it, and improve on it. For example, you could add in the ability to <a href="files/ignore.html">ignore particular links</a> <code>class</code>-ed as &#8220;ignore.&#8221; Get creative and let us know what you come up with.</p>
+<p>You can <a href="http://www.easy-designs.net/code/footnoteLinks/index.php#downloads">download the latest compressed version of footnoteLinks</a> from <a href="http://www.easy-designs.net/code/footnoteLinks/">its homepage</a> or download the <a href="files/improvingPrint.zip">working files for this article</a> from this site. All of the JavaScript prototypes used in this article are contained in jsUtilities 2.1, which is available as a compressed download from <a href="http://www.easy-designs.net/code/jsUtilities/">its homepage</a>.</p>
+</div>
+</body>
+</html>
+

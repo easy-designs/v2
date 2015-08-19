@@ -1,0 +1,245 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>Example Page</title>
+  <meta http-equiv="content-type" content="text/html; charset=iso-8859-1" />
+  <meta http-equiv="Content-Language" content="en-us" />
+  <meta name="author" content="" />
+  <meta name="MSSmartTagsPreventParsing" content="true" />
+  <meta name="ROBOTS" content="ALL" />
+  <meta name="Copyright" content="Copyright (c) . All rights reserved." />
+  <meta http-equiv="imagetoolbar" content="no" />
+  <meta name="Rating" content="General" />
+  <style type="text/css" media="screen">
+    body
+    {
+      font: 80% "Trebuchet MS", Verdana, Helvetica, Arial, sans-serif;
+    }
+    code
+    {
+      font: 1.1em "Courier New", courier, monospace;
+    }
+    div#body
+    {
+      float: left;
+      width: 75%;
+    }
+    div#sideBar
+    {
+      float: left;
+      font-size: .9em;
+      width: 24%;
+      padding-left: 8px;
+    }
+    div.box
+    {
+      background:  url(topLeft.gif) top left no-repeat;
+      margin: 0 0 10px;
+      max-height: 3000px;
+      max-width: 3000px;
+      padding: 0;
+    }
+    div.box div
+    {
+      background: url(topRight.gif) top right no-repeat;
+      padding: 0;
+    }
+    div.box div div
+    {
+      background: url(bottomLeft.gif) bottom left no-repeat;
+    }
+    div.box div div div
+    {
+      background: url(bottomRight.gif) bottom right no-repeat;
+      padding: 10px 10px 17px 15px;
+    }
+    div.box div div div div /* reset for any inner divs */
+    {
+      background: transparent;
+      padding: 0;
+    }
+    div.blue /*-------------------------------------Blue Box---------*/
+    {
+      background-color: #9cf;
+      color: #fff;
+    }
+    div.blue h1
+    {
+      color: #070;
+      margin: 0 0 .25em;
+    }
+    div.blue a, div.blue a:link, div.blue a:visited
+    {
+      border-bottom: 1px dotted #070;
+      color: #070;
+      text-decoration: none;
+    }
+    div.blue a:focus, div.blue a:hover
+    {
+      border-bottom-style: solid;
+    }
+    div.green /*-----------------------------------Green Box---------*/
+    {
+      background-color: #cfc;
+    }
+    div.green h1
+    {
+      color: #c73;
+      margin: 0 0 .25em;
+    }
+    div.green a, div.green a:link, div.green a:visited
+    {
+      border-bottom: 1px dotted #f71;
+      color: #f90;
+      text-decoration: none;
+    }
+    div.green a:focus, div.green a:hover
+    {
+      border-bottom-style: solid;
+    }
+    div.orange /*---------------------------------Orange Box---------*/
+    {
+      background-color: #fc9;
+      color: #555;
+    }
+    div.orange h1
+    {
+      color: #fff;
+      margin: 0 0 .25em;
+    }
+    div.orange a, div.orange a:link, div.orange a:visited
+    {
+      border-bottom: 1px dotted #fff;
+      color: #fff;
+      text-decoration: none;
+    }
+    div.orange a:focus, div.orange a:hover
+    {
+      border-bottom-style: solid;
+    }
+    div#content div div div /*------------------------Content---------*/
+    {
+      min-height: 400px;
+    }
+    div#content div div div div /* reset inner div */
+    {
+      min-height: 0;
+    }
+    div#info div div div div /*---------------------------Info---------*/
+    {
+      background: transparent url(info.gif) top left no-repeat;
+      margin: 0 5px;
+      padding: 0 0 0 40px;
+    }
+    div#info h2
+    {
+      font-size: 1.6em;
+    }
+    div#info ul
+    {
+      margin: 7px 0 0;
+      padding: 0;
+    }
+    div#info ul li
+    {
+      list-style: none;
+      margin: 0;
+      padding: 0 0 .5em;
+    }
+    ul#trail li
+    {
+      list-style: none;
+      padding: 0 0 5px 5px;
+    }
+    ul#trail li ul
+    {
+      margin: 0;
+      padding: 0;
+    }
+    ul#trail li ul li
+    {
+      background: url(downLevel.gif) 0 2px no-repeat;
+      padding: 0 0 0 13px;
+    }
+    ul#trail li a
+    {
+      background: transparent;
+      border: 0;
+      color: #777;
+      display: block;
+    }
+    ul#trail li a:focus, ul#trail li a:hover
+    {
+      text-decoration: underline;
+      color: #555;
+    }
+    ul#trail li.here a
+    {
+      color: #555;
+      font-size: 1.1em;
+      font-weight: bold;
+      text-decoration: none;
+    }
+    div#testimonial blockquote /* ------------------------------TESTIMONIAL--------- */
+    {
+      background: url(openQuote.gif) top left no-repeat;
+      color: #666;
+      margin: 0;
+    }
+    div#testimonial blockquote p
+    {
+      font: 1.6em/1.3em "Trebuchet MS", Verdana, Helvetica, Arial, sans-serif;
+      padding: .7em .2em 0;
+      margin: 0;
+    }
+    div#testimonial blockquote cite
+    {
+      background: url(closeQuote.gif) bottom right no-repeat;
+      display: block;
+      font-size: 1.2em;
+      font-style: normal;
+      margin: 0;
+      padding: 0 .2em 1em;
+      text-align: right;
+    }
+    div#testimonial blockquote cite:before
+    {
+      content: "\2014";
+    }
+  </style>
+</head>
+<body>
+<div id="body">
+  <div id="content" class="box green"><div><div><div>
+    <h1>This is an <code>&#60;h1&#62;</code></h1>
+    <p lang="eo" xml:lang="eo" dir="ltr">Ehe kovri rekta akuzativa vo! El vela dolaro tripunkto ebl. Kiu bo pleja iometo, kio si post kromakcento praantauhierau, ina ad tebi esperanto oktiliono. Fine matematiko vortfarado o sin, plu vela antauantauhierau vortludo op.</p>
+    <p lang="eo" xml:lang="eo" dir="ltr">
+Bv bis unuo triono, ari ko vasta decimalo! Halo predikato tia nj, mf dura hura postparto avo! Sola zepto da san. Se poe negativaj rolvorteto, por mikrometro septiliono ro, celo deci ah ej? Kvar volus subtegmento ato ki. Io vavo eksterajo iel, ba adjektivo infinitivo unt, en halt frikativo log! Sen certa onklo eksterna ol.</p>
+    <p lang="eo" xml:lang="eo" dir="ltr">Ol men tiaokaze konsonanto! Nea ts nenia postmorgau? Tian horo semi ke pro, tre is laringalo frikativo? Tuj getto esperantigo ek, as mis havi vatto rolfinajo?</p>
+    <div>This is another <code>&#60;div&#62;</code> inside, notice it has none of the features of the other <code>&#60;div&#62;</code>s. It also contains a <a href="#">link</a>.</div>
+  </div></div></div></div>
+</div>
+<div id="sideBar">
+  <div id="info" class="box blue"><div><div><div><div>
+    <h1>You Are Here</h1>
+    <ul id="trail">
+      <li><a href="#">link</a>
+        <ul>
+          <li><a href="#">link</a>
+            <ul>
+              <li class="here"><a href="#">link</a></li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </div></div></div></div></div>
+  <div id="testimonial" class="box orange"><div><div><div>
+    <blockquote>
+      <p>Lasi disde eksteren ali io, cis it sekve negativa kompleksa. Cia so minus frazenkondukilo, ekoo konateco om tio, sia volu kial antaelemento do!</p>
+      <cite>Denise Smith</cite>
+    </blockquote>
+  </div></div></div></div>
+</div>
+</body>
+</html>

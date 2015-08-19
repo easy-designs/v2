@@ -1,0 +1,224 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>Select Replacement Test Form</title>
+  <meta http-equiv="content-type" content="text/html; charset=iso-8859-1" />
+  <meta http-equiv="Content-Language" content="en-us" />
+  <meta name="author" content="Aaron Gustafson (aaron at easy-designs dot net)" />
+  <meta name="MSSmartTagsPreventParsing" content="true" />
+  <meta name="ROBOTS" content="ALL" />
+  <meta name="Copyright" content="(CC) 1999-2005 Easy! Designs, LLC. Except where otherwise noted, this site is licensed under a Creative Commons License." />
+  <meta http-equiv="imagetoolbar" content="no" />
+  <meta name="Rating" content="General" />
+  <style type="text/css">
+    body {
+      font: 80% "Trebuchet MS", verdana, helvetica, arial, sans-serif;
+    }
+    fieldset {
+      border: 1px solid #9e0000;
+      margin: 1em 0;
+      padding: 10px;
+      width: 302px;
+    }
+    fieldset.wrapper {
+      border: 0;
+      margin: 0;
+      padding: 0;
+    }
+    input {
+      background: #dfb27d;
+      border: 1px solid #9e0000;
+      color: #000;
+      display: block;
+      margin: 0 0 10px;
+      padding: 0;
+      width: 300px;
+    }
+    input:focus {
+      background: #fff;
+    }
+    input.button {
+      color: #9e0000;
+      cursor: pointer;
+      width: auto;
+      float: right;
+      margin: 10px 0;
+      padding: 1px 2px;
+    }
+    legend {
+      color: #9e0000;
+      font-size: 1.2em;
+      font-weight: bold;
+    }
+    label {
+      display: block;
+      font-weight: bold;
+      color: #9e0000;
+    }
+    select {
+      display: block;
+      margin: 0 0 10px;
+      width: 300px;
+    }
+    select.replaced {
+      width: 1px;
+      position: absolute;
+      left: -999em;
+    }
+    ul.selectReplacement {
+      background: url(top.jpg) top left no-repeat;
+      margin: 0 0 10px;
+      padding: 0;
+      height: 1.65em;
+      width: 300px;
+      position: relative;
+      z-index: 1000;
+    }
+    ul.selectFocused {
+      background-image: url(top-focus.jpg);
+    }
+    ul.selectReplacement li {
+      background: #cf5a5a;
+      color: #fff;
+      cursor: pointer;
+      display: none;
+      font-size: 11px;
+      line-height: 1.7em;
+      list-style: none;
+      margin: 0;
+      padding: 1px 12px;
+      width: 276px;
+    }
+    ul.selectOpen li {
+      display: block;
+    }
+    ul.selectReplacement li.selected {
+      background: url(bottom.gif) bottom left no-repeat;
+      border-bottom: 1px solid #fff;
+      color: #fff;
+      display: block;
+    }
+    ul.selectOpen li.selected {
+      background: #9e0000;
+      border: 0;
+      display: block;
+    }
+    ul.selectOpen li:hover,
+    ul.selectOpen li.hover,
+    ul.selectOpen li.selected:hover {
+      background: #9e0000;
+      color: #fff;
+    }
+  </style>
+  <script type="text/javascript">
+    // <![CDATA[
+    function selectReplacement(obj) {
+      obj.className += ' replaced';
+      var ul = document.createElement('ul');
+      ul.className = 'selectReplacement';
+      var opts = obj.options;
+      var selectedOpt = (!obj.selectedIndex) ? 0 : obj.selectedIndex;
+      for (var i=0; i<opts.length; i++) {
+        var li = document.createElement('li');
+        var txt = document.createTextNode(opts[i].text);
+        li.appendChild(txt);
+        li.selIndex = i;
+        li.selectID = obj.id;
+        li.onclick = function() {
+          selectMe(this);
+        };
+        if (i == selectedOpt) {
+          li.className = 'selected';
+          li.onclick = function() {
+            this.parentNode.className += ' selectOpen';
+            this.onclick = function() {
+              selectMe(this);
+            };
+          };
+        }
+        if (window.attachEvent) {
+          li.onmouseover = function() {
+            this.className += ' hover';
+          };
+          li.onmouseout = function() {
+            this.className = 
+              this.className.replace(new RegExp(" hover\\b"), '');
+          };
+        }
+        ul.appendChild(li);
+      }
+      obj.onfocus = function() {
+        ul.className += ' selectFocused';
+      };
+      obj.onblur = function() {
+        ul.className = 'selectReplacement';
+      };
+      obj.parentNode.insertBefore(ul,obj);
+    }
+    function selectMe(obj) {
+      var lis = obj.parentNode.getElementsByTagName('li');
+      for (var i=0; i<lis.length; i++) {
+        if (lis[i] != obj) {
+          lis[i].className='';
+          lis[i].onclick = function() {
+            selectMe(this);
+          };
+       } else {
+          setVal(obj.selectID, obj.selIndex);
+          obj.className='selected';
+          obj.parentNode.className = 
+            obj.parentNode.className.replace(new RegExp(" selectOpen\\b"), '');
+          obj.onclick = function() {
+            obj.parentNode.className += ' selectOpen';
+            this.onclick = function() {
+              selectMe(this);
+            };
+          };
+        }
+      }
+    }
+    function setVal(objID,val) {
+      var obj = document.getElementById(objID);
+      obj.selectedIndex = val;
+    }
+    function setForm() {
+      var s = document.getElementsByTagName('select');
+      for (var i=0; i<s.length; i++) {
+        selectReplacement(s[i]);
+      }
+    }
+    window.onload = function() {
+      (document.all && !window.print) ? null : setForm();
+    };
+    // ]]>
+  </script>
+</head>
+<body>
+
+<h1>Select Replacement Test</h1>
+<form action="#" method="post">
+  <fieldset class="wrapper">
+    <fieldset>
+      <legend>Sample Form</legend>
+      <label for="fld1">Text Field</label>
+      <input type="text" id="fld1" name="fld1" tabindex="100" />
+      <label for="something">Select to Replace</label>
+      <select id="something" name="something" tabindex="101">
+        <option value="1">This is option 1</option>
+        <option value="2">This is option 2</option>
+        <option value="3">This is option 3</option>
+        <option value="4">This is option 4</option>
+        <option value="5" selected="selected">This is option 5</option>
+        <option value="6">This is option 6</option>
+        <option value="7">This is option 7</option>
+        <option value="8">This is option 8</option>
+      </select>
+      <label for="fld3">Another Text Field</label>
+      <input type="text" id="fld3" name="fld3" tabindex="102" />
+    </fieldset>
+    <input class="button" type="submit" name="submit" value="submit" />
+  </fieldset>
+</form>
+
+</body>
+</html>

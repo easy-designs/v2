@@ -1,0 +1,194 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+	<meta http-equiv="PICS-Label" content='(PICS-1.1 "http://www.icra.org/ratingsv02.html" l gen true for "http://www.digital-web.com" r (cz 1 lc 1 nd 1 nr 1 oz 1 vz 1) "http://www.rsac.org/ratingsv01.html" l gen true for "http://www.digital-web.com" r (n 0 s 0 v 0 l 1))' />
+	<meta name="resource-type" content="Document" />
+	<meta name="description" content="Digital Web Magazine - Christopher Schmitt" />
+	<meta name="keywords" content="Christopher Schmitt, Christopher, Chris, Schmitt, Professional CSS, Cascading Style Sheets for Web Design, CSS, Cascading Style Sheets, interview, web, design, web design, digital, magazine" />
+	<meta name="distribution" content="local" />
+	<meta name="copyright" content="Copyright 2005 Digital Web Magazine" />
+	<meta name="type" content="index" />
+	<meta name="pubdate" content="20050808" />
+
+	<link rel="shortcut icon" type="image/ico" href="http://www.digital-web.com/favicon.ico" />
+	<link rel="alternate" type="application/rss+xml" href="http://www.digital-web.com/news/rss/" title="RSS 2.0: What's New feed" />
+	<link rel="alternate" type="application/rss+xml" href="http://www.digital-web.com/dates/rss/" title="RSS 2.0: Latest Articles feed" />
+	<link rel="bookmark" href="#masthead" title="Top of the Page" />
+	<link rel="bookmark" href="#globalNav" title="Navigation" />
+	<link rel="search" href="http://www.digital-web.com/search/" title="Search Digital Web Magazine" />
+	<link rel="bookmark" href="#content" title="Content" />
+	<link rel="copyright" href="javascript:alert('Copyright 2005 Digital Web Magazine')" />
+
+	<link rel="stylesheet" href="http://www.digital-web.com/css/article.css" type="text/css" media="screen" title="Digital Web Magazine Style" />
+	<link rel="alternate stylesheet" href="http://www.digital-web.com/css/print.css" type="text/css" media="screen" title="Print Preview" />
+	<link rel="stylesheet" href="http://www.digital-web.com/css/print.css" type="text/css" media="print" />
+	<script type="text/javascript" src="http://www.digital-web.com/js/api.js"></script>
+
+	<title>Digital Web Magazine - Jeremy Keith on DOM Scripting</title>
+	
+</head>
+<body id="article">
+
+<h1 id="masthead"><a href="http://www.digital-web.com/articles/"><img src="http://www.digital-web.com/images/dw_logo_big.gif" width="316" height="77" alt="Digital Web Magazine" /></a></h1>
+<p id="slogan">The web professional's online magazine of choice.</p>
+
+<div id="content" class="column">
+
+	<h1>Jeremy Keith on DOM Scripting</h1>
+	<p class="location">In: <a href="http://www.digital-web.com/types/interviews/">Interviews</a></p>
+	<p class="author">By <a href="http://www.digital-web.com/about/staff/aaron_gustafson/">Aaron Gustafson</a></p>
+	<p class="date">Published on September ??, 2005</p>
+    
+<p>2005 may just be the year of Jeremy Keith. Hot on the heels of his packed presentation at <abbr title="South By Southwest">SXSW</abbr> with fellow Brit-packer Andy Budd, Jeremy wrote his first book, entitled <a href="http://www.amazon.com/exec/obidos/ASIN/1590595335/digitalwebmagazi"><cite><abbr title="Document Object Model">DOM</abbr> Scripting: Web Design with Javascript and the Document Object Model</cite></a>, while working full-time as a freelance web developer. As if that wasn&#8217;t enough, he also established the <abbr title="Document Object Model">DOM</abbr> Scripting Task Force at the Web Standards Project (<abbr title="Web Standards Project">WaSP</abbr>), created <a href="http://www.domscripting.com">domscripting.com</a> and managed to make some great music to boot. Jeremy, Andy and Richard Rutter also recently joined forces to form the web consultancy clear:left. He took a few minutes (<abbr title="okay">OK</abbr>, nearly two hours) away from his busy schedule for a chat with us about <abbr title="Document Object Model">DOM</abbr> Scripting&#8212;the book <em>and</em> the movement.</p>
+
+<p class="interviews"><strong>Digital Web Magazine:</strong> What got you interested in JavaScript?</p>
+<p><strong>Jeremy Keith:</strong> Originally, it was the desire to do cool stuff like make things whizz around the page or make one thing do something when you clicked on another thing. You can still see my first forays into whizz-bang whoosh <abbr title="Dynamic HyperText Markup Language">DHTML</abbr> at <a href="http://adactio.com/version1/">http://adactio.com/version1/</a>.</p>
+<p>I didn&#8217;t really consider usability or accessibility issues; I just wanted my sites to be cool. Of course, that was a very nineties idea of cool. Nowadays, usability and accessibility are, in and of themselves, cool. JavaScript, on the other hand, is not.</p>
+
+<p class="interviews"><strong>DW:</strong> Ha, true. Do you remember the first script you ever wrote?</p>
+<p><strong>JK:</strong> Honestly, no. But I imagine it was probably a rollover script. Either that or some piece of client-side form validation. For a long time, those were by far the most popular uses of JavaScript. I don&#8217;t think I&#8217;m alone in saying that it was rollovers or form validation that first introduced me to JavaScript. Even back then, I remember being confused by the plethora of scripts that all basically accomplished the same things but in completely different ways. The Perl maxim of &#8220;There&#8217;s more than one way to do it&#8221; definitely applies to JavaScript. The trick, then and now, is recognising a good way of doing something.</p>
+
+<p class="interviews"><strong>DW:</strong> What would you say makes a really good script?</p>
+<p><strong>JK:</strong> For me, I think graceful degradation is the most important factor. What that boils down to is that <span class="pullquote">a good script shouldn&#8217;t make any assumptions about its environment. Instead, it should investigate the terrain and carry out tasks only when the browser or document are capable of executing the instructions.</span> The obvious example is object detection: instead of assuming that the browser understands a method you&#8217;re going to use, like say <code>document.getElementById</code>, you test for its existence before doing anything else in your script. The same approach applies to the document itself. Don&#8217;t assume that an element with a certain <code>id</code> exists: check for its existence before trying to manipulate it.</p>
+<p>I think that&#8217;s the key to writing good, robust JavaScript. It&#8217;s the <abbr title="Document Object Model">DOM</abbr> Scripting equivalent to what Dan Cederholm would call &#8220;bulletproofing&#8221; in <abbr title="Cascading Style Sheets">CSS</abbr>.</p>
+
+<p class="interviews"><strong>DW:</strong> You were one of the first people to use the term &#8220;<abbr title="Document Object Model">DOM</abbr> Scripting&#8221; for what has been traditionally known as <abbr title="Dynamic HyperText Markup Language">DHTML</abbr>. Why the shift in nomenclature?</p>
+<p><strong>JK:</strong> Mostly because of the baggage associated with the term <abbr title="Dynamic HyperText Markup Language">DHTML</abbr>. The term <abbr title="Dynamic HyperText Markup Language">DHTML</abbr> didn&#8217;t originate with developers: it was a marketing buzzword created by the browser vendors. I&#8217;m pretty sure that to most developers, the name sounded confusing&#8230; like another flavour of HTML&#8230; like, say, XHTML.</p>
+<p>Also, the kind of scripts that date from the <abbr title="Dynamic HyperText Markup Language">DHTML</abbr> era (the late nineties) are fundamentally different than the kind of scripts we would write today. Back then, competing browsers had different Document Object Models. If you wanted to reference an element in Internet Explorer, you had to use <code>document.all</code>. In Netscape, it was <code>document.layers</code>. <abbr title="Dynamic HyperText Markup Language">DHTML</abbr>, by necessity, involved lots of code-forking to make anything work cross-browser.</p>
+<p>Nowadays, thanks to the standardised <abbr title="Document Object Model">DOM</abbr>, that kind of code forking is no longer necessary. You really can just write once and publish everywhere.</p>
+<p>A lot of web developers who tried <abbr title="Dynamic HyperText Markup Language">DHTML</abbr> years ago got burned, and they&#8217;re wary of getting burned again. Applying the term <abbr title="Document Object Model">DOM</abbr> Scripting to the new, standards-based way of writing JavaScript helps to distance it from the stigma of old-school <abbr title="Dynamic HyperText Markup Language">DHTML</abbr>.</p>
+<p>I still think <abbr title="Dynamic HyperText Markup Language">DHTML</abbr> is a useful term, but only in a historical sense. It&#8217;s a handy way to refer to the kind of scripts that were written during the browser wars.</p>
+
+<p class="interviews"><strong>DW:</strong> Is <abbr title="Document Object Model">DOM</abbr> Scripting limited to JavaScript?</p>
+<p><strong>JK:</strong> Well, the <abbr title="Document Object Model">DOM</abbr> itself isn&#8217;t limited to JavaScript. The <abbr title="Document Object Model">DOM</abbr> is completely language and platform agnostic. The knowledge you gain from using the <abbr title="Document Object Model">DOM</abbr> with JavaScript could turn out to be very, very handy if you ever need to parse an <abbr title="eXtensible Markup Language">XML</abbr> file using <abbr title="Hypertext PreProcessor">PHP</abbr>, <abbr title="Active Server Pages">ASP</abbr> or any other number of server-side languages.</p>
+<p>The term <abbr title="Document Object Model">DOM</abbr> Scripting, though, pretty much applies to the combination of the <abbr title="Document Object Model">DOM</abbr> and JavaScript, <abbr lang="la" title="id est meaning &#8216;that is&#8217;">i.e.</abbr> client-side <abbr title="Document Object Model">DOM</abbr> manipulation (in the browser) rather than server-side.</p>
+<p>I suppose, technically, I shouldn&#8217;t even be saying JavaScript. I should refer to the language as <abbr title="European Computer Manufacturers Association">ECMA</abbr>Script. But at some stage, even my inner pedant just gives up.</p>
+
+<p class="interviews"><strong>DW:</strong> Yeah, <abbr title="European Computer Manufacturers Association">ECMA</abbr>Script is a bit of a mouthful.</p>
+<p><strong>JK:</strong> Well, remember, for a while there, there were other terms floating around too&#8230; LiveScript, JScript&#8230; JavaScript seems to have survived as the fittest.</p>
+
+<p class="interviews"><strong>DW:</strong> True. What do you see as the major stumbling blocks to broad adaptation of <abbr title="Document Object Model">DOM</abbr> Scripting?</p>
+<p><strong>JK:</strong> I think that most of the problems are psychological rather than technical. On the one hand, that&#8217;s really good: there&#8217;s no need to lobby browser vendors or hardware manufacturers to add support for anything&#8212;it&#8217;s already there. On the other hand, the psychological barriers are very real and, in some cases, quite justified.</p>
+<p>Let&#8217;s face it, no matter how you slice it, JavaScript is programming. And programming is scary if you&#8217;re not a programmer. Most web designers simply don&#8217;t want to deal with code, and who can blame them?</p>
+<p>But I&#8217;m hopeful that people can set aside their trepidation and approach <abbr title="Document Object Model">DOM</abbr> Scripting as something that can be rewarding, even fun.</p>
+<p>I think the greatest weapon we have when it comes to evangelising <abbr title="Document Object Model">DOM</abbr> Scripting is <abbr title="Cascading Style Sheets">CSS</abbr>. Designers have embraced <abbr title="Cascading Style Sheets">CSS</abbr>, but writing <abbr title="Cascading Style Sheets">CSS</abbr> isn&#8217;t like designing something in Photoshop: you really have to think about the structure of the document in order to style it. <abbr title="Document Object Model">DOM</abbr> Scripting is just a variation on that: you think about the structure of the document when you want to add behaviour.</p>
+<p>It&#8217;s true that JavaScript has a steeper initial learning curve, but once that has been mastered, the rewards are exponential.</p>
+
+<p class="interviews"><strong>DW:</strong> How about major enticements to adopting it? Or, to put it another way, how do you win over the <abbr title="Cascading Style Sheets">CSS</abbr> set?</p>
+<p><strong>JK:</strong> The simplest and most effective way is to probably point at something that looks and behaves very cool and ask, &#8220;Hey, don&#8217;t you want to be able to make something like that?&#8221;</p>
+<p>Maybe there should be <abbr title="Document Object Model">DOM</abbr> Scripting Zen Garden. In the meantime, pointing out nifty bits of well-written <abbr title="Document Object Model">DOM</abbr> Scripting (and they&#8217;re popping up more and more frequently) should get the ball rolling.</p>
+<p>The other big task is to remove the fear. That involves writing clear, jargonless tutorials that explain just what <abbr title="Document Object Model">DOM</abbr> Scripting is and what it can do.</p>
+
+<p class="interviews"><strong>DW:</strong> Good point. Are the <abbr title="Cascading Style Sheets">CSS</abbr> folks the primary audience for you book? <cite><abbr title="Document Object Model">DOM</abbr> Scripting</cite> certainly doesn&#8217;t read like a normal scripting primer. Can you talk a little about the decisions you made to differentiate it from other tech books?</p>
+<p><strong>JK:</strong> Yes, the <abbr title="Cascading Style Sheets">CSS</abbr> folks are most definitely the audience I&#8217;m aiming for with the book. That&#8217;s the major distinguishing factor: it&#8217;s a book about a programming language but it isn&#8217;t aimed at programmers. I&#8217;ve had to walk a very thin line between keeping the explanations simple and being downright patronising&#8230; I hope I didn&#8217;t step over that line too often.</p>
+<p>The other thing that differentiates this book from other JavaScript books is that I hardly ever discuss specific browsers. There&#8217;s a bit at the start about the browser wars and a bit at the end about the current state of the Web, but the bulk of the book is about writing scripts that will work in any modern browser without any browser-sniffing and code-forking.</p>
+<p>I hope that the book will appeal to the <abbr title="Cascading Style Sheets">CSS</abbr>-wielding designers who already know the benefits of using standards&#8230; I just hope that they don&#8217;t get put off by seeing lines of code when they&#8217;re leafing through the pages, deciding whether they want to buy it.</p>
+
+<p class="interviews"><strong>DW:</strong> How about the traditional <abbr title="Dynamic HyperText Markup Language">DHTML</abbr> wizards? How do you reach out to them? How do you help people break years of bad habits?</p>
+<p><strong>JK:</strong> In some ways, that might be a tougher nut to crack. The problem there is convincing people of the benefits of standards. It&#8217;s just like trying to explain why nested tables shouldn&#8217;t be used for layout: if someone has been using nested tables for years and doesn&#8217;t see any benefit to changing their methodology, there&#8217;s not much you can do. Likewise, if someone has built up an arsenal of techniques that, on the surface, appear to work (at least in some browsers), they won&#8217;t look kindly on the idea of starting afresh.</p>
+<p>I think that, as is now happening with <abbr title="Cascading Style Sheets">CSS</abbr>, the marketplace may end up being the deciding factor. If you make websites and you don&#8217;t use <abbr title="Cascading Style Sheets">CSS</abbr>, you&#8217;re a dinosaur and before too long, you&#8217;re not going to have much work coming in. Whereas a <abbr title="Cascading Style Sheets">CSS</abbr>-savvy designer is going to be increasingly in demand. Eventually, that&#8217;s what&#8217;s going to happen with old-school <abbr title="Dynamic HyperText Markup Language">DHTML</abbr> versus the standards-based <abbr title="Document Object Model">DOM</abbr> Scripting, although it may take longer.</p>
+
+<p class="interviews"><strong>DW:</strong> Agreed. Who do you consider innovators in the <abbr title="Document Object Model">DOM</abbr> scripting world? What/who inspires you?</p>
+<p><strong>JK:</strong> There are some great innovators out there, but the people who really amaze me are the ones who have been advocating a responsible, standards-based approach to JavaScript for years (long before the term <abbr title="Document Object Model">DOM</abbr> Scripting emerged). Peter-Paul Koch has probably done more than anybody to lay the groundwork for the JavaScript revolution. He has invested an incredible amount of time and effort into quirksmode.org.</p>
+<p>Steve Champeon has been talking about JavaScript, progressive enhancement and graceful degradation for years. It&#8217;s just a shame that it&#8217;s taken this long for the rest of us to start listening to him.</p>
+<p>And of course there are my fellow countrymen and friends, Stuart Langridge and Simon Willison. They have both gone out of their way not just to write cool scripts, but to share some fantastic knowledge with the community at large.</p>
+<p>Aaron Boodman, Scott Andrew, Cameron Adams&#8230; these guys have been experimenting and consistently coming up with some great results.</p>
+<p>And you&#8217;re no slacker in the scripting department yourself, Mr. Gustafson.</p>
+
+<p class="interviews"><strong>DW:</strong> Aww, shucks. Now the other JavaScript-related technology that has the industry abuzz right now is <abbr title="Asynchronus JavaScript and XML">AJAX</abbr>. How does <abbr title="Asynchronus JavaScript and XML">AJAX</abbr> factor into <abbr title="Document Object Model">DOM</abbr> Scripting? What do you say to those purists/zealots who pooh-pooh it for not being a standard?</p>
+<p><strong>JK:</strong> You have to remember that <abbr title="Asynchronus JavaScript and XML">AJAX</abbr> <dfn title="does not equal">!=</dfn> <code>XMLHttpRequest</code>. That&#8217;s part of it, but <abbr title="Asynchronus JavaScript and XML">AJAX</abbr> is first and foremost a methodology.</p>
+<p>But as for the <code>XMLHttpRequest</code> object not being a standard, I can totally sympathise with the purists. I&#8217;m probably one of them. I hate the thought of using something that doesn&#8217;t appear in a specification from the <abbr title="World Wide Web Consortium">W3C</abbr>. And, sure enough, the first thing you have to do when you want use <abbr title="Asynchronus JavaScript and XML">AJAX</abbr> is fork your code: Internet Explorer does it one way, Mozilla another. But, on the whole, sheer pragmatism wins out and the benefits of using the non-standard object win out. I just hope it isn&#8217;t a slippery slope that would lead to developers returning to browser-specific code.</p>
+<p>On the whole, I welcome our new <abbr title="Asynchronus JavaScript and XML">AJAX</abbr> overlords. The buzz being generated by <abbr title="Asynchronus JavaScript and XML">AJAX</abbr> applications like Flickr and Google Maps has done wonders for re-igniting interest in JavaScript. For the first time in quite a while, people really want to know how to write scripts. It&#8217;s critical that these people have resources they can turn to so that they can learn <abbr title="Document Object Model">DOM</abbr> Scripting in a safe, responsible way. JavaScript is like any other powerful tool: in the wrong hands-and without the proper expertise-it could be used to do terrible damage.</p>
+<p>But I tend to give people more credit than that. I think that most people want to build cool stuff and do the right thing.</p>
+
+<p class="interviews"><strong>DW:</strong> Let&#8217;s talk for a moment about your involvement with <abbr title="Web Standards Project">WaSP</abbr> and the new <abbr title="Document Object Model">DOM</abbr> Scripting Task Force. <abbr title="Web Standards Project">WaSP</abbr> did a lot to further the use of web standards (especially <abbr title="Cascading Style Sheets">CSS</abbr>) by working with software developers to improve their products. Do you see the <abbr title="DOM Scripting Task Force">DSTF</abbr> working with these vendors to improve the quality of the ready-made JavaScript libraries for their <abbr title="What You See Is What You Get">WYSIWYG</abbr> editors?</p>
+<p><strong>JK:</strong> That&#8217;s not something we&#8217;ve discussed. There are a lot of things we could wind up doing in the future, but for the time being, it&#8217;s baby steps. Our first priority is in educating and helping developers. After that, we&#8217;ll probably take stock of the situation and see what needs to be done. For now though, we&#8217;ve got enough on our plate just dealing with the evangelisation and documentation of <abbr title="Document Object Model">DOM</abbr> Scripting.</p>
+
+<p class="interviews"><strong>DW:</strong> True. Do you think it is something you would be interested in persuing? How about browser makers? Are you interested in working with them toward improving their products?</p>
+<p><strong>JK:</strong> Well, the situation now is a lot different than when the <abbr title="Web Standards Project">WaSP</abbr> was first formed. In fact, one of the driving factors behind the formation of the <abbr title="Web Standards Project">WaSP</abbr> was the lack of support for the standardised <abbr title="Document Object Model">DOM</abbr>. Compared to those dark days, the browser market of today is a <abbr title="Document Object Model">DOM</abbr> Scripting paradise. Sure, there are things that could be improved in just about every browser&#8217;s support for certain <abbr title="Document Object Model">DOM</abbr> details, but the core functionality exists across the board. It&#8217;s a very different situation to the uneven <abbr title="Cascading Style Sheets">CSS</abbr> playing field.</p>
+<p>That&#8217;s something that may come as a pleasant surprise to <abbr title="Cascading Style Sheets">CSS</abbr> developers who are making the move to <abbr title="Document Object Model">DOM</abbr> Scripting. With <abbr title="Cascading Style Sheets">CSS</abbr>, you write your style sheet and then you spend ages trying to get it to work in all the different browsers and operating systems. With <abbr title="Document Object Model">DOM</abbr> Scripting, the work all happens at the start. But once you&#8217;ve got a function that works in one browser, chances are it&#8217;s going to work in nearly all.</p>
+<p>Again, that&#8217;s not to say that browsers couldn&#8217;t be improved in some aspects but, on the whole, cross-browser <abbr title="Document Object Model">DOM</abbr> support is far, far better than <abbr title="Cascading Style Sheets">CSS</abbr> support.</p>
+
+<p class="interviews"><strong>DW:</strong> What&#8217;s next for you? Another book or are you thinking of taking a break from writing for a while?</p>
+<p><strong>JK:</strong> I&#8217;m definitely not going to be writing another book any time soon: that stuff is hard! But I will be doing lots of writing. I&#8217;ll be writing articles for the <abbr title="Document Object Model">DOM</abbr> Scripting Task Force and I also plan to start publishing some stuff on <a href="http://www.domscripting.com">domscripting.com</a>. Writing the book was just the beginning. The real work starts now.</p>
+
+<p class="interviews"><strong>DW:</strong> That sounds great. <a href="http://www.domscripting.com">domscripting.com</a> could turn into a fantastic resource. Final question, and it&#8217;s on a bit of a tangent: If Salter Cane takes off and you&#8217;re busy touring the world, who would you hire to maintain your website?</p>
+<p><strong>JK:</strong> I&#8217;m too much of a control freak to let anyone else touch my site&#8230; heck, I don&#8217;t even have comments enabled. But if Salter Cane were doing well enough to be touring the road, I would stipulate in my rider that <abbr title="wireless fidelity">WiFi</abbr> must be available in every venue we play. That way, I could fulfil my dreams of rock stardom by night and continue to post irrelevant trivia on my site by day.</p>
+
+<p class="interviews"><strong>DW:</strong> Ha, that&#8217;s great. Thank you so much for your time.</p>
+<p><strong>JK:</strong> Thank you Aaron.</p>
+
+<div class="bannerad">
+<script type="text/javascript">
+<!--
+google_ad_client = "pub-1744554946853503";
+google_ad_width = 468;
+google_ad_height = 60;
+google_ad_format = "468x60_as";
+google_ad_channel ="5419990905";
+google_color_border = "FFFFFF";
+google_color_bg = "FFFFFF";
+google_color_link = "000000";
+google_color_url = "666666";
+google_color_text = "333333";
+//-->
+</script>
+<script type="text/javascript" src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+</script>
+</div>
+
+	<p id="bio">
+		<a href="/about/contributors/aaron_gustafson">Aaron Gustafson</a> is Sr. Web Designer/Developer at <a href="http://www.cronin-co.com/">Cronin and Company</a>. A bit of a workaholic, Aaron also freelances as part of <a href="http://www.easy-designs.net/">Easy Designs</a>, sits on the <a href="http://www.webprofessionals.org/">WOW</a> advisory panel, and does pro bono work for numerous grassroots organizations.<br />
+		<br />
+		<a href="/profiles/jeremy_keith.shtml">Jeremy Keith</a> is a web developer living and working in Brighton, England. He is a member of the <a href="http://www.webstandards.org">Web Standards Project</a> where he serves as joint leader of the <a href="http://domscripting.webstandards.org">DOM Scripting Task Force</a>. When he&#8217;s not building websites for <a href="http://www.clearleft.com">clear:left</a>, Jeremy plays bouzouki in the alt.country band <a href="http://www.saltercance.com">Salter Cane</a>. His online home is <a href="http://www.adactio.com">adactio.com</a>.<br />
+	</p>
+
+	<p>There have been <a href="http://www.digital-web.com/articles/jeremy_keith/comments/">0 comments</a> posted about this article.</p>
+
+</div>
+
+
+<div id="footer">
+	<p class="banner ad"><a href="http://www.digital-web.com/ad.php?id=45"><img src="http://www.digital-web.com/images/ads/banner_tempaterover.gif" width="468" height="60" alt="www.TemplateRover.com [Advertisement]" /></a><br />
+	<a href="http://www.digital-web.com/about/advertising/">Advertise with us</a></p>
+	<p>Copyright &#169; 1994-2005 <a href="http://www.digital-web.com/about/copyright/">Digital Web Magazine</a>. All Rights Reserved.</p>
+</div>
+
+<ul id="globalNav">
+	<li id="articlesLink" class="active"><a href="http://www.digital-web.com/">Home</a></li>
+	<li id="contributeLink"><a href="http://www.digital-web.com/contribute/">Contribute</a></li>
+	<li id="subscribeLink"><a href="http://www.digital-web.com/subscribe/">Subscribe</a></li>
+	<li id="contactLink"><a href="http://www.digital-web.com/contact/">Contact</a></li>
+	<li id="aboutLink"><a href="http://www.digital-web.com/about/">About</a></li>
+</ul>
+
+<p style="position:absolute; right:23px; top:25px; z-index:100;"><a href="http://www.digital-web.com/about/site/"><img src="http://www.digital-web.com/images/hostedby.gif" alt="Media Temple" width="117" height="14" border="0" /></a></p>
+
+<ul id="sortNav">
+	<li id="topicLink"><a href="http://www.digital-web.com/topics/">Articles by topic</a></li>
+	<li id="dateLink"><a href="http://www.digital-web.com/dates/">Articles by date</a></li>
+	<li id="authorLink"><a href="http://www.digital-web.com/authors/">Articles by author</a></li>
+	<li id="titleLink"><a href="http://www.digital-web.com/titles/">Articles by title</a></li>
+	<li id="typeLink"><a href="http://www.digital-web.com/types/">Articles by type</a></li>
+	<li class="search">
+		<form action="/search/" method="get">
+			<label for="searchTerms">Search</label>	
+			<input type="text" name="q" id="searchTerms" value="" />
+			<input type="image" src="http://www.digital-web.com/images/go.gif" alt="GO!" id="searchSubmit" />
+		</form>
+	</li>
+</ul>
+
+<div id="sideAds" style="top: 370px;">
+	<p class="button ad"><a href="http://www.digital-web.com/ad.php?id=37"><img src="http://www.digital-web.com/images/ads/banner_mini_pixellogo2.gif" width="135" height="100" alt="Logo Design by Pixellogo [Advertisement]" /></a><br />
+	<a href="http://www.digital-web.com/about/advertising/">Advertise with us</a></p>
+	<p class="text ad">
+	Photos provided courtesy of <a href="http://www.istockphoto.com/">iStockPhoto.com</a><br /><br />
+	Publication managed with the help of <a href="http://www.basecamphq.com/">Basecamp</a><br /><br />
+	Newsletter powered by <a href="http://www.campaignmonitor.com/?utm_source=digital-web&amp;utm_medium=text&amp;utm_campaign=digital-web">Campaign Monitor</a>
+	</p>
+</div>
+
+</body>
+</html>

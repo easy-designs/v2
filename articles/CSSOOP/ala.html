@@ -1,0 +1,278 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>OOP-up your styles: A List Apart</title>
+<style type="text/css" media="screen">@import "/c/ala.css";</style>
+
+<style type="text/css" media="projection">@import "/c/ala.css";</style>
+
+<link rel="stylesheet" type="text/css" media="print" href="/c/print.css" />
+
+<meta http-equiv="Content-type" content="text/html; charset=iso-8859-1" />
+<meta http-equiv="Content-Language" content="en-us" />
+<meta name="ROBOTS" content="ALL" />
+<meta name="Copyright" content="Copyright (c) 2003 A List Apart Magazine, Happy Cog Studios LLC, Jeffrey Zeldman, and the respective authors" />
+<meta http-equiv="imagetoolbar" content="no" />
+<meta name="MSSmartTagsPreventParsing" content="true" />
+
+<link rel="Shortcut Icon" href="/favicon.ico" type="image/x-icon" />
+<link rel="alternate" type="application/rss+xml" title="RSS" href="/rss.xml" />
+
+<meta name="description" content="Accessibility and usability using the DOM and CSS" />
+<meta name="keywords" content="accessibility, usability, DOM, CSS" />
+
+<link rel="help" href="http://www.alistapart.com/about/" title="Site info." />
+
+<link rev="happycog" href="http://www.happycog.com/" title="Produced by Happy Cog Studios LLC: web design, consulting, and publishing." />
+<link rev="zeldman" href="http://www.zeldman.com/" title="Directed by Jeffrey Zeldman, bringing web designers The Daily Report since 1995." />
+
+<meta name="Rating" content="General" />
+<meta name="revisit-after" content="5 Days" />
+<meta name="doc-class" content="Living Document" />
+
+
+</head>
+
+<body onload="window.defaultStatus='A List Apart, for people who make websites.'" id="sectiontwo">
+
+
+<div id="wrapper"><p class="hide"><a href="#maincontent">Skip navigation</a>.</p><div id="header"><a href="/" title="A List Apart Home - current issue."><img src="/i/h/7.gif" width="597" height="75" border="0" alt="A List Apart front page: HOME" /></a></div>
+
+<div id="menu"><ul><li id="one"><a href="/" title="A List Apart Home - current issue.">up front</a></li><li id="two"><a href="/articles/" title="Design, code, content.">articles</a></li><li id="three"><a href="/about/" title="Everything you wanted to know about A List Apart.">about ala</a></li><li id="four"><a href="/live/" title="We may be coming to your town.">live events</a></li><li id="five"><a href="/xmlfeed/" title="RSS feeds, headlines and summaries.">xml feeds</a></li></ul></div>
+
+
+<div id="pagebody"><div id="maincontent">
+
+
+<h6>ISSN: 1534-0295. xx September 2004 &#8211; Issue No. <a href="/issues/xxx/" title="Permanent location for this issue.">xxx</a></h6>
+
+
+
+<h1><acronym lang="en-us" title="Object-Oriented Programming">OOP</acronym>-up your styles</h1>
+<h3 class="byline">by <a href="/authors/aarongustafson/" title="View all articles by this author.">Aaron Gustafson</a></h3>
+
+<p>Seems like everywhere you turn someone is talking about Object-Oriented Programming (<acronym lang="en-us" title="Object-Oriented Programming">OOP</acronym>). Some scripting languages have been object-oriented from the beginning, while others have moved in that direction over time. <acronym lang="en-us" title="Object-Oriented Programming">OOP</acronym> makes sense: you can create generic classes, functions, etc. that can be used whenever they&#8217;re needed and can serve multiple purposes. And for designers/developers into Web Standards, it makes a lot of sense too. Just as we separate content/structure from presentation, <acronym lang="en-us" title="Object-Oriented Programming">OOP</acronym> allows us to separate behavior (or presentation) from a given situation. Generic code is reusable, scalable and tends to be less verbose than situation-specific code.</p>
+
+<p>While working on a new website, I got to thinking about <acronym lang="en-us" title="Object-Oriented Programming">OOP</acronym> and its applications for presentation as well. Sure, styling with <acronym lang="en-us" title="Cascading Style Sheets">CSS</acronym> isn&#8217;t really programming <dfn lang="la" title="In itself; for its own sake.">per se</dfn>, but it is possible to view <acronym lang="en-us" title="Cascading Style Sheets">CSS</acronym> from an object perspective. Dan Cedarholm sowed the seed of this idea in <a href="http://www.alistapart.com/articles/mountaintop/">Mountaintop Corners</a>, but I felt we could abstract it even further.</p>
+
+<h2>The Example </h2>
+
+<p>Let&#8217;s say we want to create several text boxes with rounded corners and a drop shadow, each with a different background color: </p>
+
+<img src="files/boxes.gif" width="392" height="175" alt="these are three colored boxes which we will attempt top recreate in an object-oriented manner" />
+
+<p>Now marking these boxes up is pretty simple, this is <a href="http://www.alistapart.com/articles/cssdropshadows/" title="A List Apart: CSS Drop Shadows">well</a> <a href="http://www.alistapart.com/articles/cssdrop2/" title="A List Apart: CSS Drop Shadows II: Fuzzy Shadows">covered</a> <a href="http://www.alistapart.com/articles/onionskin/" title="A List Apart: Onion Skinned Drop Shadows">territory</a>. We&#8217;ll take it a little farther though, letting the cascade do more of the work for us (rather than <code>class</code>-ing each div):</p>
+
+<pre>
+&lt;div class=&quot;blueBox&quot;&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;
+  &lt;p&gt;Content goes here.&lt;/p&gt;
+&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;
+</pre>
+
+<p>Now we can apply some style. We might consider creating a class for each colored box once we&#8217;ve <a href="files/corners.html" title="This page shows how to build the slices to create the rounded, shadowed boxes">cut the necessary corners</a>. For example: </p>
+
+<pre>
+div.blueBox {
+  background: #9cf url(topLeft.gif)
+              top left no-repeat;
+  color: #fff;
+  float: left;
+  margin: 0 0 10px;
+  padding: 0;
+  max-height: 3000px;
+  max-width: 3000px;
+}
+div.blueBox div {
+  background: url(topRight.gif)
+              top right no-repeat;
+  padding: 0;
+}
+div.blueBox div div {
+  background: url(bottomLeft.gif)
+              bottom left no-repeat;
+}
+div.blueBox div div div {
+  background: url(bottomRight.gif)
+              bottom right no-repeat;
+  padding: 10px 10px 17px 15px;
+}
+/* reset for any inner divs */
+div.blueBox div div div div {
+  background: transparent;
+  padding: 0;
+}
+</pre>
+
+<p>Repeating all of that code for each box color we propose seems a little redundant. Thinking more generically, we can drop the background-color and background-image values from each div to make a generic class, &#8220;box&#8221;:</p>
+
+<pre>
+div.<strong>box</strong> {
+  background: url(topLeft.gif)
+              top left no-repeat;
+  float: left;
+  margin: 0 0 10px;
+  padding: 0;
+  max-height: 3000px;
+  max-width: 3000px;
+}
+div.<strong>box</strong> div {
+  background: url(topRight.gif)
+              top right no-repeat;
+  padding: 0;
+}
+div.<strong>box</strong> div div {
+  background: url(bottomLeft.gif)
+              bottom left no-repeat;
+}
+div.<strong>box</strong> div div div {
+  background: url(bottomRight.gif)
+              bottom right no-repeat;
+  padding: 10px 10px 17px 15px;
+}
+/* reset for any inner divs */
+div.<strong>box</strong> div div div div {
+  background: transparent;
+  padding: 0;
+}
+</pre>
+
+<p>Then we can greate another class for each color which fills in the color-specific info:</p>
+
+<pre>
+div.blue {
+  background-color: #9cf;
+  color: #fff;
+}
+</pre>
+
+<p>We apply the two classes to the div as such:</p>
+
+<pre>
+&lt;div class=&quot;<strong>box blue</strong>&quot;&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;
+  &lt;p&gt;Content goes here.&lt;/p&gt;
+&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;
+</pre>
+
+<p> And we can go even further, applying addional rules to change the appearance of the content within the boxes depending on their color: </p>
+
+<pre>
+div.blue h1 {
+  color: #070;
+  margin: 0 0 .25em;
+}
+div.blue a, 
+div.blue a:link, 
+div.blue a:visited {
+  border-bottom: 1px dotted #070;
+  color: #070;
+  text-decoration: none;
+}
+div.blue a:focus, 
+div.blue a:hover {
+  border-bottom-style: solid;
+}
+</pre>
+
+<p>Now <a href="files/final.html">we are using</a> much more compact <acronym lang="en-us" title="Cascading Style Sheets">CSS</acronym> that is capable of being reused (for instance, we could add additional colored boxes further down the line). This sort of thinking can help speed development and keeps your code flexible and reusable. And, if you&#8217;re adventurous, you can then take this simple example even further by combining this technique with semantic <code>id</code>-ing <a href="files/withIDs.html">to great effect</a>.</p>
+<h2 id="talkaboutit">Discuss</h2>
+<p>Was it good for you, too? <a href="/discuss/eatcake/">Discuss</a> this article.</p>
+
+
+<p id="authorbio">Aaron Gustafson is Sr. Web Designer / Developer at <a href="http://www.cronin-co.com/" title="Cronin and Company">Cronin and Company</a> in Glastonbury, Connecticut. He is a major proponent of web standards, accessibility and usability, speaking often on these topics and helping clients, large and small, meet the growing need for well-structured and accessible websites.</p>
+
+</div><div id="sidebar">
+
+<div id="subnav">
+
+
+<dl>
+
+<dt>Discuss</dt>
+<dd><a href="/discuss/eatcake/">Talk about</a> this article.</dd>
+
+<dt>Bookmark</dt>
+<dd><a href="/articles/eatcake/">Permanent URI</a>.</dd>
+
+</dl>
+
+
+<p class="pullquote">Using JavaScript and the DOM, we have the ability to control every element on a well-structured web page. Add a bit of CSS and we have the recipe for a wonderful experience regardless of the browser, platform or device being used.</p>
+
+<label for="sp-q">Search</label><br />
+<!-- Atomz Search HTML for A List Apart Magazine -->
+<form method="get" action="http://search.atomz.com/search/" style="margin:0px;">
+<input size="12" name="sp-q" id="sp-q" style="width: 140px;" /><br />
+<input type="checkbox" name="disc" id="disc" value="All" onclick="this.form.elements['sp-k'].value = (this.checked) ? '' : 'All';" /><label for="disc">Include Discussions</label><br />
+<input type="hidden" name="sp-a" value="sp1002d27b" />
+<input type="hidden" name="sp-f" value="ISO-8859-1" />
+<input type="hidden" name="sp-p" value="All" />
+<input type="hidden" name="sp-k" value="All" />
+
+<input type="submit" value="Search" />
+</form>
+<br />
+<dl>
+<dt>Related Topics</dt>
+<dd><ul>
+<li><a href="/topics/accessibility/">Accessibility</a></li><li><a href="/topics/content/">Content</a></li><li><a href="/topics/css/">CSS</a></li><li><a href="/topics/dom/">DOM | Scripting</a></li><li><a href="/topics/usability/">Usability</a></li>
+</ul></dd>
+</dl>
+
+<dl>
+
+<dt>Departments</dt>
+<dd><ul>
+<li><a href="/contact/">Contact</a></li>
+<li><a href="/contribute/">Contribute</a></li>
+<li><a href="/credits/">Credits</a></li>
+<li><a href="/copyright/">Permissions</a></li>
+<li><a href="/qa/">Q &amp; A</a></li>
+
+</ul></dd>
+
+<dt>Hot Topics</dt>
+<dd><ul>
+<li><a href="/topics/accessibility/">Accessibility</a> 38</li>
+<li><a href="/topics/browsers/">Browsers | X-Platform</a> 31</li>
+<li><a href="/topics/business/">Business</a> 42</li>
+<li><a href="/topics/content/">Content</a> 44</li>
+
+<li><a href="/topics/css/">CSS</a> 55</li>
+<li><a href="/topics/culture/">Culture</a> 41</li>
+<li><a href="/topics/design/">Design</a> 76</li>
+<li><a href="/topics/dom/">DOM | Scripting</a> 23</li>
+<li><a href="/topics/flash/">Flash</a> 9</li>
+
+<li><a href="/topics/html/">HTML | XHTML</a> 46</li>
+<li><a href="/topics/process/">Process</a> 23</li>
+<li><a href="/topics/server-side/">Server-Side</a> 24</li>
+<li><a href="/topics/tools/">Tools</a> 24</li>
+<li><a href="/topics/typography/">Typography</a> 11</li>
+
+<li><a href="/topics/usability/">Usability</a> 23</li>
+<li><a href="/topics/xml/">XML &amp; Pals</a> 12</li>
+
+</ul>
+</dd></dl>
+<p>ALA lives at <a href="/logicworks/">Logicworks</a>.</p><p><a href="http://www.jewelboxing.com/indexala.php">Jewelboxing</a>. Sweet disc packaging systems. Put your stuff in something nice, will ya?</p>
+
+</div>
+
+</div></div>
+
+<div id="footer">
+<p><a href="/copyright/">Copyright</a> &copy; 1998&#8211;2004 <a href="/">A List Apart</a> Magazine, <a href="http://www.happycog.com/">Happy Cog Studios</a>, and the authors. <a href="http://validator.w3.org/check/referer">XHTML</a>, <a href="http://jigsaw.w3.org/css-validator/validator?uri=http://www.alistapart.com/c/ala.css">CSS</a>, <a href="http://www.contentquality.com/mynewtester/cynthia.exe?Url1=http://www.alistapart.com/">508</a>.</p>
+
+
+
+</div></div>
+
+<!--
+
+
+
+
+-->
+</body>
+</html>

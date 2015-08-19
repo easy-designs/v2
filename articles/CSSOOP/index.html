@@ -1,0 +1,140 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<title>OOP-up your styles</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <meta http-equiv="Content-Language" content="en-us" />
+</head>
+
+<body>
+<?php message(); ?>
+<div id="content">
+<h1><acronym lang="en-us" title="Object-Oriented Programming">OOP</acronym>-up your styles</h1>
+<h3>by Aaron Gustafson</h3>
+
+<p>Seems like everywhere you turn someone is talking about Object-Oriented Programming (<acronym lang="en-us" title="Object-Oriented Programming">OOP</acronym>). Some scripting languages have been object-oriented from the beginning, while others have moved in that direction over time. <acronym lang="en-us" title="Object-Oriented Programming">OOP</acronym> makes sense: you can create generic classes, functions, etc. that can be used whenever they&#8217;re needed and can serve multiple purposes. And for designers/developers into Web Standards, it makes a lot of sense too. Just as we separate content/structure from presentation, <acronym lang="en-us" title="Object-Oriented Programming">OOP</acronym> allows us to separate behavior (or presentation) from a given situation. Generic code is reusable, scalable and tends to be less verbose than situation-specific code.</p>
+
+<p>While working on a new website, I got to thinking about <acronym lang="en-us" title="Object-Oriented Programming">OOP</acronym> and its applications for presentation as well. Sure, styling with <acronym lang="en-us" title="Cascading Style Sheets">CSS</acronym> isn&#8217;t really programming <dfn lang="la" title="In itself; for its own sake.">per se</dfn>, but it is possible to view <acronym lang="en-us" title="Cascading Style Sheets">CSS</acronym> from an object perspective. Dan Cedarholm sowed the seed of this idea in <a href="http://www.alistapart.com/articles/mountaintop/">Mountaintop Corners</a>, but I felt we could abstract it even further.</p>
+
+<h2>The Example </h2>
+
+<p>Let&#8217;s say we want to create several text boxes with rounded corners and a drop shadow, each with a different background color: </p>
+
+<img src="files/boxes.gif" width="392" height="175" alt="these are three colored boxes which we will attempt top recreate in an object-oriented manner" />
+
+<p>Now marking these boxes up is pretty simple, this is <a href="http://www.alistapart.com/articles/cssdropshadows/" title="A List Apart: CSS Drop Shadows">well</a> <a href="http://www.alistapart.com/articles/cssdrop2/" title="A List Apart: CSS Drop Shadows II: Fuzzy Shadows">covered</a> <a href="http://www.alistapart.com/articles/onionskin/" title="A List Apart: Onion Skinned Drop Shadows">territory</a>. We&#8217;ll take it a little farther though, letting the cascade do more of the work for us (rather than <code>class</code>-ing each div):</p>
+
+<pre>
+&lt;div class=&quot;blueBox&quot;&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;
+  &lt;p&gt;Content goes here.&lt;/p&gt;
+&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;
+</pre>
+
+<p>Now we can apply some style. We might consider creating a class for each colored box once we&#8217;ve <a href="files/corners.html" title="This page shows how to build the slices to create the rounded, shadowed boxes">cut the necessary corners</a>. For example: </p>
+
+<pre>
+div.blueBox {
+  background: #9cf url(topLeft.gif)
+              top left no-repeat;
+  color: #fff;
+  float: left;
+  margin: 0 0 10px;
+  padding: 0;
+  max-height: 3000px;
+  max-width: 3000px;
+}
+div.blueBox div {
+  background: url(topRight.gif)
+              top right no-repeat;
+  padding: 0;
+}
+div.blueBox div div {
+  background: url(bottomLeft.gif)
+              bottom left no-repeat;
+}
+div.blueBox div div div {
+  background: url(bottomRight.gif)
+              bottom right no-repeat;
+  padding: 10px 10px 17px 15px;
+}
+/* reset for any inner divs */
+div.blueBox div div div div {
+  background: transparent;
+  padding: 0;
+}
+</pre>
+
+<p>Repeating all of that code for each box color we propose seems a little redundant. Thinking more generically, we can drop the background-color and background-image values from each div to make a generic class, &#8220;box&#8221;:</p>
+
+<pre>
+div.<strong>box</strong> {
+  background: url(topLeft.gif)
+              top left no-repeat;
+  float: left;
+  margin: 0 0 10px;
+  padding: 0;
+  max-height: 3000px;
+  max-width: 3000px;
+}
+div.<strong>box</strong> div {
+  background: url(topRight.gif)
+              top right no-repeat;
+  padding: 0;
+}
+div.<strong>box</strong> div div {
+  background: url(bottomLeft.gif)
+              bottom left no-repeat;
+}
+div.<strong>box</strong> div div div {
+  background: url(bottomRight.gif)
+              bottom right no-repeat;
+  padding: 10px 10px 17px 15px;
+}
+/* reset for any inner divs */
+div.<strong>box</strong> div div div div {
+  background: transparent;
+  padding: 0;
+}
+</pre>
+
+<p>Then we can greate another class for each color which fills in the color-specific info:</p>
+
+<pre>
+div.blue {
+  background-color: #9cf;
+  color: #fff;
+}
+</pre>
+
+<p>We apply the two classes to the div as such:</p>
+
+<pre>
+&lt;div class=&quot;<strong>box blue</strong>&quot;&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;
+  &lt;p&gt;Content goes here.&lt;/p&gt;
+&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;
+</pre>
+
+<p> And we can go even further, applying addional rules to change the appearance of the content within the boxes depending on their color: </p>
+
+<pre>
+div.blue h1 {
+  color: #070;
+  margin: 0 0 .25em;
+}
+div.blue a, 
+div.blue a:link, 
+div.blue a:visited {
+  border-bottom: 1px dotted #070;
+  color: #070;
+  text-decoration: none;
+}
+div.blue a:focus, 
+div.blue a:hover {
+  border-bottom-style: solid;
+}
+</pre>
+
+<p>Now <a href="files/final.html">we are using</a> much more compact <acronym lang="en-us" title="Cascading Style Sheets">CSS</acronym> that is capable of being reused (for instance, we could add additional colored boxes further down the line). This sort of thinking can help speed development and keeps your code flexible and reusable. And, if you&#8217;re adventurous, you can then take this simple example even further by combining this technique with semantic <code>id</code>-ing <a href="files/withIDs.html">to great effect</a>.</p>
+</div>
+</body>
+</html>
