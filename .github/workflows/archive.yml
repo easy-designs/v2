@@ -1,0 +1,41 @@
+name: Validate static archive
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - name: Validate public-only deployment
+        run: |
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          root = Path("public")
+          assert (root / "index.html").is_file(), "Missing archive home"
+          assert (root / "_redirects").is_file(), "Missing legacy redirects"
+          for private in ("public", "netlify.toml", "migration-manifest.json"):
+              assert not (root / private).exists(), f"Unexpected source/output copy: {private}"
+          files = [path for path in root.rglob("*") if path.is_file()]
+          assert sum(path.stat().st_size for path in files) < 950_000_000
+          for path in files:
+              assert not path.is_symlink(), path
+              assert path.suffix.lower() not in {".php", ".sql", ".sh"}, path
+              assert not any(part in {"global", "responses", "sql-backup", ".git"} for part in path.parts), path
+              if path.suffix in {".html", ".css", ".js", ".svg"}:
+                  text = path.read_text(encoding="utf-8")
+                  assert "ed-cdn.com" not in text, path
+                  if path.suffix in {".css", ".js"}:
+                      assert "<?php" not in text, path
+          manifest = json.loads(Path("migration-manifest.json").read_text())
+          assert not manifest.get("failures"), manifest.get("failures")
+          print(f"Validated {len(files)} public files")
+          PY

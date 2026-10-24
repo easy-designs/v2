@@ -1,0 +1,114 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>IE Underscore Bug</title>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <meta http-equiv="Content-Language" content="en-us" />
+  <meta name="author" content="Aaron Gustafson (aaron at easy-designs dot net)" />
+  <meta name="MSSmartTagsPreventParsing" content="true" />
+  <meta name="ROBOTS" content="ALL" />
+  <meta name="Copyright" content="(CC) 1999-2026 Easy Designs, LLC. Except where otherwise noted, this site is licensed under a Creative Commons License." />
+  <meta http-equiv="imagetoolbar" content="no" />
+  <meta name="Rating" content="General" />
+  <link rel="stylesheet" type="text/css" media="screen" href="/css/basic.css" />
+  <link rel="stylesheet" type="text/css" media="screen, projection" href="/css/advanced.css" />
+  <link rel="stylesheet" type="text/css" media="print" href="/css/print.css" />
+  <link rel="shortcut icon" type="image/ico" href="/favicon.svg" />
+  <link rel="copyright" href="/license.php" />
+  <script type="text/javascript" src="/scripts/jsUtilities.js"></script>
+  <script type="text/javascript" src="/scripts/main.js"></script>
+  <script type="text/javascript" src="/scripts/pageGlossary.js"></script>
+  <script type="text/javascript" src="/scripts/footnoteLinks.js"></script>
+
+  <style type="text/css" media="screen">
+    span.rating {
+      background: url(stars.jpg) top left repeat-x;
+      display: block;
+      height: 19px;
+      text-indent: -999em;
+    }
+    span._2 {
+      width: 42px;
+    }
+    span#_2 {
+      width: 42px;
+    }
+  </style>
+</head>
+<body><aside class="archive-notice" role="note" style="position:relative;z-index:10000;padding:1em;background:#fff7d6;color:#222;font:16px/1.5 sans-serif"><strong>Historical archive.</strong> This site is preserved for reference. Services, registrations, payments, and server-backed demonstrations are no longer offered here.</aside>
+<div id="content">
+  <h1>IE Underscore Bug Test</h1>
+  <p><a href="http://www.w3.org/TR/REC-html40/struct/global.html#h-7.5.2">HTML Specification</a> does not allow use of a number in a <code>class</code> or <code>id</code>, it is suggested that you preceed a leading number with an underscore (_). Windows IE does not obey the rules set for a <code>class</code> or <code>id</code> beginning with an underscore.</p>
+
+  <h2>Example 1: Underscore in <code>class</code></h2>
+  <dl>
+    <dt>Style Applied</dt>
+    <dd><pre class="style"><code>
+span.rating {
+  border: 1px solid #fff;
+  background: url(stars.jpg) top left repeat-x;
+  display: block;
+  height: 19px;
+  text-indent: -999em;
+}
+span._2 {
+  width: 42px;
+}
+</code></pre></dd>
+    <dt>Code</dt>
+    <dd><pre class="html"><code>
+&#60;dl&#62;
+  &#60;dt&#62;Your Rating:&#60;/dt&#62;
+  &#60;dd&#62;&#60;span class=&#34;rating _2&#34;&#62;2 Stars&#60;/span&#62;&#60;/dd&#62;
+&#60;/dl&#62;
+</code></pre></dd>
+    <dt>Example</dt>
+    <dd>
+      <dl>
+        <dt>Your Rating:</dt>
+        <dd><span class="rating _2">2 Stars</span></dd>
+      </dl>
+    </dd>
+  </dl>
+
+  <h2>Example 2: Underscore in <code>id</code></h2>
+  <dl>
+    <dt>Style Applied</dt>
+    <dd><pre class="style"><code>
+span.rating {
+  border: 1px solid #fff;
+  background: url(stars.jpg) top left repeat-x;
+  display: block;
+  height: 19px;
+  text-indent: -999em;
+}
+span#_2 {
+  width: 42px;
+}
+</code></pre></dd>
+    <dt>Code</dt>
+    <dd><pre class="html"><code>
+&#60;dl&#62;
+  &#60;dt&#62;Your Rating:&#60;/dt&#62;
+  &#60;dd&#62;&#60;span id=&#34;_2&#34; class=&#34;rating&#34;&#62;2 Stars&#60;/span&#62;&#60;/dd&#62;
+&#60;/dl&#62;
+</code></pre></dd>
+    <dt>Example</dt>
+    <dd>
+      <dl>
+        <dt>Your Rating:</dt>
+        <dd><span id="_2" class="rating">2 Stars</span></dd>
+      </dl>
+    </dd>
+  </dl>
+
+  <h2>Solution</h2>
+  <p>None as of now&#8230; suggested that you avoid using an underscore to lead a <code>class</code> or <code>id</code>.</p>
+
+</div>
+  <div id="footer">
+      <p class="copyright"><a id="cc" href="http://creativecommons.org/licenses/by-sa/2.0/" title="View the Creative Commons license for this page">(CC)</a> 1999-2026 Easy Designs, LLC. Except where otherwise <a href="/license.php">noted</a>, this site is licensed under a <a href="http://creativecommons.org/">Creative Commons</a> License.</p>
+  </div>
+
+</body>
+</html>

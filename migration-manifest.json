@@ -1,0 +1,27 @@
+{
+  "domain": "v2.easy-designs.net",
+  "redirects": {
+    "/articles/WesthostOnRails/index.php": "/articles/WesthostOnRails/",
+    "/articles/iIR/index.php": "/articles/iIR/",
+    "/articles/ieFloatTextRenderBug/index.php": "/articles/ieFloatTextRenderBug/",
+    "/articles/ieUnderscoreBug/index.php": "/articles/ieUnderscoreBug/",
+    "/articles/index.php": "/articles/",
+    "/articles/replaceSelect/index.php": "/articles/replaceSelect/",
+    "/articles/replaceSelect2/index.php": "/articles/replaceSelect2/",
+    "/articles/safariGeneratedContentWidthBug/index.php": "/articles/safariGeneratedContentWidthBug/",
+    "/articles/theBitwiseOperator/index.php": "/articles/theBitwiseOperator/",
+    "/books/WDN3/27/Ajax1/index.php": "/books/WDN3/27/Ajax1/",
+    "/books/WDN3/27/Ajax2/index.php": "/books/WDN3/27/Ajax2/",
+    "/code/footnoteLinks/index.php": "/code/footnoteLinks/",
+    "/code/formSuite/index.php": "/code/formSuite/",
+    "/code/gFSS/gFSS.php": "/code/gFSS/gFSS/",
+    "/code/index.php": "/code/",
+    "/code/jsTrace/index.php": "/code/jsTrace/",
+    "/code/jsUtilities/index.php": "/code/jsUtilities/",
+    "/code/makeGlossary/index.php": "/code/makeGlossary/",
+    "/code/pageGlossary/index.php": "/code/pageGlossary/",
+    "/index.php": "/",
+    "/license.php": "/license/"
+  },
+  "source_commit": "4df1f83ef9e5fe01af33ccbadbdc7361072d8638"
+}

@@ -1,0 +1,63 @@
+/* REDEFINE HTML */
+a:link, a:visited {
+  color: #245f12;
+  text-decoration: underline;
+}
+a:link:after,
+a:visited:after {
+  content: " (" attr(href) ") ";
+  font-size: 90%;
+}
+a[href^="/"]:link:after,
+a:visited:after {
+  content: " (http://www.easy-designs.net" attr(href) ") ";
+  font-size: 90%;
+}
+html.noted a:link:after,
+html.noted a:visited:after {
+  content: '';
+}
+body {
+  background: #fff;
+  color: #000;
+  font: 12pt Times, "Times New Roman", serif;
+  width: 87%;
+  margin: 0;
+  padding: 0;
+}
+h1, h2, h3, h4, h5, h6 {
+  font: "Trebuchet MS", Verdana, Helvetica, Arial, sans-serif;
+  margin-bottom: 0;
+}
+p {
+  margin: 1em 0 0;
+}
+code {
+  font-size: .9em;
+}
+img {
+  margin: 0 0 5px;
+}
+
+/* FOOTER */
+#footer {
+  font-size: .9em;
+}
+
+/* LOGO */
+img#printLogo {
+  margin: 0 0 20px;
+  position: relative;
+  left: -100px;
+}
+
+/* HIDDEN STUFF */
+#logo object,
+#mainNav, 
+div#secondaryNav, 
+ul#secondaryNav, 
+ul#clientNav, 
+ul#thumbnails {
+  display: none;
+}
+
