@@ -1,0 +1,165 @@
+/*------------------------------------------------------------------------------
+Advanced CSS file
+
+created 11 April 2005 by Aaron Gustafson (aaron at easy-designs dot net)
+------------------------------------------------------------------------------*/
+a#cc {
+  background: url(/images/cc.png) top left no-repeat;
+  display: block;
+  float: left;
+  margin-right: 5px;
+  height: 16px;
+  width: 16px;
+  text-indent: -999em;
+  text-decoration: none;
+  position: relative;
+  top: 2px;
+}
+div#footer {
+  border-top: 1px solid #245f12;
+  clear: both;
+  margin: 20px 0 0;
+  padding: 0;
+}
+
+/* CODE BLOCKS */
+pre code {
+  background: bottom right no-repeat;
+  padding: 10px 20px 20px;
+  margin: -10px 0;
+}
+pre code img {
+  display: inline;
+  margin: -10px 0 0;
+}
+pre:before {
+  content: url(/images/code/tl.png);
+  height: 9px;
+}
+pre:after {
+  content: url(/images/code/br.png);
+  display: block;
+  height: 9px;
+  text-align: right;
+}
+/*pre code:before {
+  content: url(/images/code/tr.png);
+  display: block;
+  height: 9px;
+  margin: -19px -20px 10px 0;
+}
+pre code:after {
+  content: url(/images/code/br.png);
+  display: block;
+  height: 9px;
+  text-align: right;
+  margin: 5px -20px -19px 0;
+}*/
+pre.html {
+  background: #ffdc9f url(/images/code/html-open.png) 0 5px no-repeat;
+}
+pre.html code {
+  background-image: url(/images/code/html-close.png);
+  color: #6f4600;
+}
+pre.script {
+  background: #ceffbf url(/images/code/script-open.png) 0 5px no-repeat;
+}
+pre.script code {
+  background-image: url(/images/code/script-close.png);
+  color: #245f12;
+}
+pre.style {
+  background: #efd1d8 url(/images/code/style-open.png) 0 5px no-repeat;
+}
+pre.style code {
+  background-image: url(/images/code/style-close.png);
+  color: #6f0019;
+}
+pre.php {
+  background: #ceffbf url(/images/code/php-open.png) 0 5px no-repeat;
+}
+pre.php code {
+  background-image: url(/images/code/php-close.png);
+}
+pre.shell {
+  background: #000;
+  color: #ebebeb;
+  font-size: 1.3em;
+  padding: 20px 20px 10px;
+}
+pre.shell:before,
+pre.shell:after {
+  content: '';
+}
+
+/* BLOCKQUOTES */
+blockquote {
+  background: #f8f1c3 url(/images/bq-top.jpg) top left repeat-x;
+  margin: 1em 3em;
+  padding: 0;
+}
+blockquote pre:before,
+blockquote pre:after,
+blockquote pre code:before,
+blockquote pre code:after {
+  content: '';
+}
+blockquote pre {
+  background: transparent;
+  margin: 0;
+}
+blockquote pre code {
+  background: transparent;
+  margin: 0;
+  padding: 0;
+}
+blockquote>* {
+  padding-left: 20px;
+  padding-right: 20px;
+}
+blockquote>*:first-child {
+  margin-top: 0;
+  padding-top: 20px;
+}
+blockquote>*:last-child {
+  background: url(/images/bq-bottom.jpg) bottom left repeat-x;
+  margin-bottom: 0;
+  padding-bottom: 20px;
+}
+blockquote[cite]:after {
+  background: #fff;
+  content: "Source: " attr(cite);
+  display: block;
+  font: .9em/1.5em "Courier New", Courier, sans-serif;
+  text-align: right;
+}
+
+
+/* GLOSSARY */
+dl.glossary:after {
+  content: "."; 
+  display: block; 
+  height: 0; 
+  clear: both; 
+  visibility: hidden;
+}
+dl.glossary dt {
+  float: left;
+  clear: left;
+  margin: 0;
+  padding: 0 0 5px;
+}
+dl.glossary dt:after {
+  content: ":";
+}
+dl.glossary dd {
+  float: left;
+  clear: right;
+  margin: 0 0 0 5px;
+  padding: 0 0 5px;
+}
+* html dl.glossary dd {
+  clear: none;
+  width: 80%;
+}

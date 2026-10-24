@@ -1,0 +1,62 @@
+/*----------------------------------------------------------------------------------------
+
+Big
+Block of comments
+
+----------------------------------------------------------------------------------------*/
+body {
+  background: #f90;
+  padding: 10px 0 0 10px;
+} /* comment */
+#content {
+  width: 60%;
+  float: left;
+  position: relative;
+}
+#sidebar {
+  width: 30%;
+  float: right;
+  position: relative;
+}
+p {
+  position: relative;
+}
+p:before {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: block;
+  border: 1px solid #000;
+  background: #fff;
+  content: " [this is from gFss] ";
+}
+abbr:after {
+  content: " (" attr( title ) ") ";
+}
+#content:before {
+  -gfss-source: url(spiral.swf);
+  -gfss-background-color: #000;
+  -gfss-flash-version: 6;
+  -gfss-quality: high;
+  -gfss-flash-vars: "foo=bar&bar=foo";
+  -gfss-width: 50;
+  -gfss-height: 50;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+#sidebar:after {
+  -gfss-source: url(arrow.swf);
+  -gfss-background-color: #fff;
+  -gfss-flash-version: 6;
+  -gfss-quality: high;
+  -gfss-width: 50;
+  -gfss-height: 50;
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+.gFSS-generated:before,
+.gFSS-generated:after {
+  display: none;
+}

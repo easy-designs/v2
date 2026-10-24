@@ -1,0 +1,196 @@
+/*------------------------------------------------------------------------------
+Basic CSS file
+
+created 11 April 2005 by Aaron Gustafson (aaron at easy-designs dot net)
+------------------------------------------------------------------------------*/
+/*= GLOBAL RESET */
+* {
+  border: 0;
+  font-size: 1em;
+  font-style: normal;
+  margin: 0;
+  padding: 0;
+}
+
+a, a:link, a:visited {
+  color: #245f12;
+  text-decoration: underline;
+}
+a:focus, a:hover {
+  text-decoration: none;
+}
+abbr, acronym {
+  cursor: help;
+}
+cite, dfn {
+  cursor: help;
+  font-style: italic;
+}
+address {
+  display: block;
+  font-style: normal;
+  margin: 0 20px 1.5em;
+}
+body {
+  font: 80% "Trebuchet MS", Verdana, Helvetica, Arial, sans-serif;
+  padding: 20px;
+}
+code,
+kbd,
+samp,
+var {
+  font: normal 1.2em "Courier New", Courier, fixed-width;
+}
+dt {
+  font-weight: bold;
+  margin-top: 1em;
+}
+dl dt:first-child {
+  margin-top: 0;
+}
+dd {
+  line-height: 1.5em;
+}
+ol, ul {
+  margin: .25em 0 0 20px;
+}
+li {
+  line-height: 1.5em;
+}
+h1, h2, h3, h4, h5, h6 {
+  clear: both;
+  color: #245f12;
+  font-family: "Lucida Sans Unicode", "Lucida Grande", Arial, Helvetica, sans-serif;
+  letter-spacing: .05em;
+  line-height: 1.5em;
+  word-spacing: 0;
+}
+h1 {
+  font-size: 2em;
+  margin: 0 0 -5px;
+}
+h2 {
+  font-size: 1.5em;
+  margin: .5em 0 0;
+}
+h3 {
+  font-size: 1.2em;
+}
+h4 {
+  font-size: 1em;
+}
+h5 {
+  font-size: .9em;
+}
+h6 {
+  font-size: .8em;
+}
+h1 a, h2 a, h3 a, h4 a, h5 a, h6 a {
+  text-decoration: none;
+}
+h2+dl, h3+dl, h4+dl,
+h2+ol, h3+ol, h4+ol,
+h2+ul, h3+ul, h4+ul,
+h2+p, h3+p, h4+p {
+  margin-top: .25em;
+}
+hr {
+  margin-bottom: 10px;
+  margin-top: 10px;
+  padding: 0;
+}
+img {
+  border: 0;
+  display: block;
+  margin: 1em 10px 0;
+}
+p {
+  margin: 1em 0 0;
+}
+pre {
+  margin: 1em 10px;
+}
+pre code {
+  background: #ceffbf;
+  color: #245f12;
+  display: block;
+  margin: 0;
+  padding: 10px;
+}
+pre code strong {
+  color: #000;
+}
+
+/* CLASSES & IDs */
+.error {
+  color: #f00
+}
+.hidden {
+  visibility: hidden;
+}
+.notes {
+  color: #000;
+  font-size: .9em;
+}
+.printOnly {
+  display: none;
+}
+.url,
+.path,
+.file {
+  font: normal 1.2em "Courier New", Courier, fixed-width;
+}
+#disclaimer {
+  margin: 1em 10%;
+}
+#disclaimer strong {
+  color: #bf1717;
+  display: block;
+  font-size: 1.2em;
+}
+
+/* FORMS */
+fieldset {
+  border: 0;
+  margin: 1em 0;
+  padding: 0;
+}
+fieldset fieldset {
+  padding: 10px;
+}
+legend {
+  background: transparent;
+  border: 0;
+  font: bold 1.2em "Trebuchet MS", Verdana, Helvetica, Arial, sans-serif;
+  margin: 0 0 0 -10px;
+  padding: 0;
+}
+label, input, select, textarea {
+  display: block;
+}
+input, select, textarea {
+  border: 1px solid #555;
+  width: 300px;
+}
+label {
+  margin: 5px auto 3px;
+}
+label input {
+  border: 0;
+  display: inline;
+  width: auto;
+  margin: 0 5px 0 0;
+}
+input.submit {
+  width: auto;
+  margin: 10px 0;
+}
+
+
+/* HACKS */
+* html body {
+  /* hide from Mac IE \*/font-size: 79%;/* end hide */
+}
+* html label input {
+  width: 15px;
+}

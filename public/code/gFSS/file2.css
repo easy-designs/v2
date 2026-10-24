@@ -1,0 +1,46 @@
+body {
+  background: #f00;
+}
+#content {
+  width: 60%;
+  float: left;
+  position: relative;
+}
+#sidebar {
+  width: 30%;
+  float: right;
+  position: relative;
+}
+#sidebar:after {
+  -gfss-source: url(spiral.swf);
+  -gfss-background-color: #000;
+  -gfss-flash-version: 6;
+  -gfss-quality: high;
+  -gfss-width: 50;
+  -gfss-height: 50;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+#content:before {
+  -gfss-source: url(arrow.swf);
+  -gfss-background-color: #fff;
+  -gfss-flash-version: 6;
+  -gfss-quality: high;
+  -gfss-width: 50;
+  -gfss-height: 50;
+  -gfss-flash-vars: "foo=bar&bar=foo";
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+p:before {
+  content: " [this is from gFss] ";
+}
+abbr:after {
+  content: " (" attr( title ) ") ";
+}
+.gFSS-generated:before,
+.gFSS-generated:after {
+  display: none;
+}

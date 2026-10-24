@@ -1,0 +1,58 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>IE box model + float = duplicated text [Demo with fix applied]</title>
+  <meta name="description" content="" />
+  <meta name="keywords" content="" />
+  <style type="text/css" media="screen">
+    body {
+      font: 80% "Trebuchet MS", Arial, Helvetica, sans-serif;
+    }
+    form {
+      margin: 0;
+      padding: 0;
+    }
+    fieldset {
+      border: 0;
+      margin: 1em 0;
+      padding: 0;
+      width: 410px;
+    }
+    label {
+      display: block;
+      font-weight: bold;
+      margin-top: 7px;
+    }
+    legend {
+      color: #047cc1;
+      font-weight: bolder;
+    }
+    label input {
+      background: transparent;
+      border: 0;
+      display: inline;
+      width: auto;
+      position: relative;
+      top: 2px;
+    }
+    fieldset.radio legend {
+      font-size: 1em;
+      font-weight: bold;
+      margin: 5px 0 0;
+    }
+    fieldset.radio label {
+      color: #000;
+      font-weight: normal;
+      margin: 0 5px 0 0;
+      float: left;
+      width: 196px;
+    }
+    fieldset.y-n label {
+      width: auto;
+    }
+  </style>
+</head>
+<body><aside class="archive-notice" role="note" style="position:relative;z-index:10000;padding:1em;background:#fff7d6;color:#222;font:16px/1.5 sans-serif"><strong>Historical archive.</strong> This site is preserved for reference. Services, registrations, payments, and server-backed demonstrations are no longer offered here.</aside>
+  <p class="archive-form-notice">This historical form is no longer accepting submissions.</p>
+</body>
+</html>
