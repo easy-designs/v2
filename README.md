@@ -6,16 +6,23 @@ on a public server.
 
 ## Hosting
 
-Connect the repository to Netlify, deploy `master`, and publish `public`.
-`netlify.toml` sets the publish directory, and `public/_redirects` maps the old
-PHP entry points to their rendered static pages. Netlify is selected over
-GitHub Pages to preserve those URLs with real HTTP redirects rather than
-PHP downloads, soft-404 redirects, or broken backend requests.
+GitHub Actions validates and deploys **only `public/`** from `master` to GitHub
+Pages. In Settings > Pages, use GitHub Actions as the source, not branch
+publishing: the branch option only accepts `/` or `/docs`, not `/public`.
+Pull requests validate and upload an artifact but do not deploy.
 
-Add `v2.easy-designs.net` as the custom domain and use the subdomain DNS target
-Netlify supplies. The old DNS target was a different origin from the other
-sites and did not respond during export. Do not replace it with Pages A records
-for a Netlify deployment.
+The custom domain is `v2.easy-designs.net`; its DNS CNAME should point to
+`easy-designs.github.io`. `public/CNAME` records the domain, which must also be
+configured in Pages settings. Enable HTTPS enforcement after GitHub issues
+the certificate. No PHP environment or Netlify account is required.
+
+GitHub Pages cannot provide Netlify's HTTP redirects. The custom 404 page
+redirects all 21 historical PHP URLs to canonical archive pages with JavaScript,
+preserving queries and fragments. The initial response remains HTTP 404 rather
+than 301; without JavaScript, visitors receive the archive-home link. Unknown
+URLs remain on the 404 page. Normal archive pages work without this redirect.
+The existing `netlify.toml` and `public/_redirects` remain available for an
+optional Netlify deployment with true HTTP redirects; Pages ignores those rules.
 
 ## Preservation notes
 
@@ -48,6 +55,6 @@ configuration and ed-cdn.com dependencies in the public artifact.
 python3 -m http.server 8080 --directory public
 ```
 
-Check Netlify preview redirect status, destinations, and media types before
-changing DNS. The local server does not interpret `_redirects`. Keep a private
-backup and the previous origin until live acceptance checks are complete.
+The local server does not serve the custom 404 automatically or interpret
+`_redirects`; test historical PHP URLs on Pages. Keep a private backup and the
+previous origin until live DNS, TLS, content, and media checks are complete.
