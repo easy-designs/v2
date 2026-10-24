@@ -44,12 +44,12 @@ a:visited:after {
   // get the container &#38; target
 
   // create a heading for the footnotes
-  
+
   // create an &#60;ol&#62; to contain the footnotes
 
   // create an array to store used links so we can check for duplicates
 
-  // create a variable to keep track of the number used for each link, so we 
+  // create a variable to keep track of the number used for each link, so we
   // have it for footnote references
 
   // collect all of the elements in the specified container into an array
@@ -103,7 +103,7 @@ addClass.apply(ol,['printOnly']);
 // so we can check for duplicates
 var myArr = []; // to store all the links
 var thisLink;   // to store each link individually
-// create a variable to keep track of the number used for each link, so we 
+// create a variable to keep track of the number used for each link, so we
 // have it for footnote references
 var num = 1;</code></pre>
 
@@ -120,7 +120,7 @@ for (var i=0; i&#60;coll.length; i++) {
   if ( coll[i].getAttribute('href') ||
        coll[i].getAttribute('cite') ) {
     // grab the reference
-    thisLink = coll[i].getAttribute('href') ? coll[i].href 
+    thisLink = coll[i].getAttribute('href') ? coll[i].href
                                             : coll[i].cite;</code></pre>
 
 <p>That looks good so far. Now we need to create our superscript:</p>
@@ -165,9 +165,9 @@ for (var i=0; i&#60;coll.length; i++) {
 <p>We have a little tidying up to do before we wrap the script. First of all, we need to handle duplicate <abbr title="Uniform Resource Indicator">URI</abbr> references. We accomplish this by looking through that array (<var>myArr</var>) we created for keeping track of our used <abbr title="Uniform Resource Indicators">URIs</abbr>. We can do that with the JavaScript port of <abbr title="Hypertext PreProcessor">PHP</abbr>&#8217;s <code>inArray</code> function (also available in the <a href="http://www.easy-designs.net/code/jsUtilities/">jsUtilities package</a>). <code>inArray</code> looks for a value (needle) in whatever array (haystack) we apply it to and returns &#8220;true&#8221; (with the index value) if found and &#8220;false&#8221; if not found. We use it when we are looping through the collection:</p>
 
 <pre><code>for (var i=0; i&#60;coll.length; i++) {
-  if ( coll[i].getAttribute('href') || 
-       coll[i].getAttribute('cite') ) { 
-    thisLink = coll[i].getAttribute('href') ? coll[i].href 
+  if ( coll[i].getAttribute('href') ||
+       coll[i].getAttribute('cite') ) {
+    thisLink = coll[i].getAttribute('href') ? coll[i].href
                                             : coll[i].cite;
     var note = document.createElement('sup');
     addClass.apply(note,['printOnly']);

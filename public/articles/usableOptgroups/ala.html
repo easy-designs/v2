@@ -86,11 +86,11 @@
 
 <pre>function splitOptgroupSelect()
 {
-  // get the fieldset 
+  // get the fieldset
   // and the original select
-  var fieldsetObj = 
+  var fieldsetObj =
       document.getElementById(&#34;locationsSet&#34;);
-  var originalSelect = 
+  var originalSelect =
       document.getElementById(&#34;location&#34;);
 }</pre>
 
@@ -98,17 +98,17 @@
 
 <pre>function splitOptgroupSelect()
 {
-  <strong>// make sure document.getElementById 
+  <strong>// make sure document.getElementById
   // is understood first
   if (!document.getElementById) {
     return null;
   }</strong>
-  
-  // get the fieldset 
+
+  // get the fieldset
   // and the original select
-  var fieldsetObj = 
+  var fieldsetObj =
       document.getElementById(&#34;locationsSet&#34;);
-  var originalSelect = 
+  var originalSelect =
       document.getElementById(&#34;location&#34;);
 }</pre>
 
@@ -116,38 +116,38 @@
 
 <pre>function splitOptgroupSelect()
 {
-  // make sure document.getElementById &#38; 
-  // document.getElementByTagName 
+  // make sure document.getElementById &#38;
+  // document.getElementByTagName
   // are understood first
   if (<strong>!document.getElementsByTagName &#38;&#38;</strong>
       !document.getElementById) {
     return null;
   }
-  
-  // get the fieldset 
+
+  // get the fieldset
   // and the original select
-  var fieldsetObj = 
+  var fieldsetObj =
       document.getElementById(&#34;locationsSet&#34;);
-  var originalSelect = 
+  var originalSelect =
       document.getElementById(&#34;location&#34;);
 <strong>  var select2Options = new Array;
 
   // break out the optgroups into an array
-  var optgroups = 
+  var optgroups =
 originalSelect.getElementsByTagName(&#34;optgroup&#34;);
- 
+
   // loop through the optgroup array
   for(var i = 0; i &#60; optgroups.length; i++)
   {
     // take 1 optgroup at a time
     var optgroup = optgroups[i];
-    
+
     // extract the label
     var label = optgroup.label;
     // make an array to hold its options
     select2Options[label] = new Array;
     // collect the options into an array
-    var options = 
+    var options =
         optgroup.getElementsByTagName(&#34;option&#34;);
     // iterate through, collecting the info
     // for each into a multi-dimensional
@@ -155,9 +155,9 @@ originalSelect.getElementsByTagName(&#34;optgroup&#34;);
     for (j = 0; j &#60; options.length; j++)
     {
       select2Options[label][j] = new Array;
-      select2Options[label][j][&#34;value&#34;] = 
+      select2Options[label][j][&#34;value&#34;] =
         options[j][&#34;value&#34;];
-      select2Options[label][j][&#34;text&#34;] = 
+      select2Options[label][j][&#34;text&#34;] =
         options[j].innerHTML;
     }
   }</strong>
@@ -168,21 +168,21 @@ originalSelect.getElementsByTagName(&#34;optgroup&#34;);
 <pre>function splitOptgroupSelect()
 {
   &#8230;
-  
+
   // break out the optgroups into an array
-  var optgroups = 
+  var optgroups =
 fieldsetObj.getElementsByTagName(&#34;optgroup&#34;);
-  
+
 <strong>  // create the state select dropdown
-  var select1 = 
+  var select1 =
       document.createElement(&#34;select&#34;);
   // set the name
   select1.setAttribute(&#34;name&#34;,&#34;locState&#34;);
   // set the id
   select1.setAttribute(&#34;id&#34;,&#34;locState&#34;);
-  
+
   // create an empty first option
-  var emptyOption = 
+  var emptyOption =
       document.createElement(&#34;option&#34;);
   // set value = &#34;&#34;
   emptyOption.setAttribute(&#34;value&#34;,&#34;&#34;);
@@ -193,7 +193,7 @@ fieldsetObj.getElementsByTagName(&#34;optgroup&#34;);
   emptyOption.innerHTML = &#34;Select a State&#34;;
   // attach option to select
   select1.appendChild(emptyOption);</strong>
-  
+
   // loop through the optgroup array
   for(var i = 0; i &#60; optgroups.length; i++)
   {
@@ -201,13 +201,13 @@ fieldsetObj.getElementsByTagName(&#34;optgroup&#34;);
     &#8230;
 
   }
-    
+
 <strong>    // create an option of this optgroup
-    var select1Option = 
+    var select1Option =
         document.createElement(&#34;option&#34;);
     select1Option.setAttribute(&#34;value&#34;,label);
     select1Option.innerHTML = label;
-        
+
     // connect option to select
     select1.appendChild(select1Option);</strong>
   }
@@ -218,41 +218,41 @@ fieldsetObj.getElementsByTagName(&#34;optgroup&#34;);
 <pre>function splitOptgroupSelect()
 {
   &#8230;
- 
+
 <strong>  // create a select for the locations
-  var select2 = 
+  var select2 =
       document.createElement(&#34;select&#34;);
   select2.setAttribute(&#34;name&#34;,&#34;location&#34;);
   select2.setAttribute(&#34;id&#34;,&#34;location&#34;);
-  
+
   // add a placeholder option & attach
-  var select2Option = 
+  var select2Option =
       document.createElement(&#34;option&#34;);
   select2Option.setAttribute(&#34;value&#34;,label);
   select2Option.setAttribute(&#34;selected&#34;,
                              &#34;selected&#34;);
   select2Option.innerHTML = &#34;&#60;--&#34;;
   select2.appendChild(select2Option);
-  
+
   // create the new legend
-  var newLegend = 
+  var newLegend =
       document.createElement(&#34;legend&#34;);
-  newLegend.innerHTML = 
+  newLegend.innerHTML =
 &#34;Restaurant Location &#60;em&#62;(if applicable)&#60;/em&#62;&#34;;
-  
+
   // assign some state and location labels
-  var select1Label = 
+  var select1Label =
       document.createElement(&#34;label&#34;);
   select1Label.innerHTML = &#34;State&#34;;
-  var select2Label = 
+  var select2Label =
       document.createElement(&#34;label&#34;)
   select2Label.innerHTML = &#34;Location&#34;;
-  
+
   // attach the selects to the labels
   select1Label.appendChild(select1);
   select2Label.appendChild(select2);
-  
-  // now append the fieldset 
+
+  // now append the fieldset
   // with our new content
   fieldsetObj.appendChild(newLegend);
   fieldsetObj.appendChild(select1Label);
@@ -286,8 +286,8 @@ fieldsetObj.getElementsByTagName(&#34;optgroup&#34;);
 <p>&#8230;and apply it to the end of <code>splitOptgroupSelect()</code>:</p>
 
 <pre>  &#8230;
- 
-  // now replace the existing content of 
+
+  // now replace the existing content of
   // the fieldset with our new content
 <strong>  removeContents(fieldsetObj);
 </strong>  fieldsetObj.appendChild(newLegend);
@@ -311,17 +311,17 @@ label.small select
 <p>Now we add a two little lines to our function&#8230;</p>
 
 <pre>  &#8230;
- 
+
   // assign some state and location labels
-  var select1Label = 
+  var select1Label =
       document.createElement(&#34;label&#34;);
   select1Label.innerHTML = &#34;State&#34;;
 <strong>  select1Label.className = &#34;small&#34;;</strong>
-  var select2Label = 
+  var select2Label =
       document.createElement(&#34;label&#34;)
   select2Label.innerHTML = &#34;Location&#34;;
 <strong>  select2Label.className = &#34;small&#34;;</strong>
- 
+
   &#8230;</pre>
 
 <p>&#8230;and it <a href="files/5.html">looks even better</a>.</p>
@@ -331,15 +331,15 @@ label.small select
 <h2>Mix batter until smooth</h2>
 <p>Not all browsers are equal, so there are a few lines we should add to our script to make sure it does not cause problems (much as we did when tested for support of <code>document.getElementById</code>). When dealing with a <a href="http://www.quirksmode.org/js/options.html">similar idea</a>, Peter Paul Koch pointed out that some older browsers may not be able to add and remove <code>&#60;option&#62;</code>s from a <code>&#60;select&#62;</code>. In order to make sure we can do what we want to, we run the following (slightly modified) test: </p>
 <pre>  &#8230;
- 
-  // get the fieldset 
+
+  // get the fieldset
   // and the original select
-  var fieldsetObj = 
+  var fieldsetObj =
       document.getElementById(&#34;locationSet&#34;);
-  var originalSelect = 
+  var originalSelect =
       document.getElementById(&#34;location&#34;);
- 
-<strong>  // make sure we can add/remove 
+
+<strong>  // make sure we can add/remove
   //options - thanks PPK!
   lgth = originalSelect.options.length - 1;
   originalSelect.options[0] = null;
@@ -347,19 +347,19 @@ label.small select
   {
     return null;
   }</strong>
- 
+
   // break out the optgroups into an array
-  var optgroups = 
+  var optgroups =
 originalSelect.getElementsByTagName(&#34;optgroup&#34;);
- 
+
   &#8230;</pre>
 
 <p>In our original select, you may have noticed a &#8220;Not Applicable&#8221; option. This serves a dual purpose. Apart from being a good option to offer, in the code added above, we are testing our ability to remove an <code>&#60;option&#62;</code> from a <code>&#60;select&#62;</code> via JavaScript. The <code>&#60;option&#62;</code> we are removing is the &#8220;Not Applicable&#8221; one. As a successful run of this test will remove that <code>&#60;option&#62;</code>, we need a means of putting it back, which we do further on in the script:</p>
 
 <pre>  &#8230;
- 
+
   // create an empty first option
-  var emptyOption = 
+  var emptyOption =
       document.createElement(&#34;option&#34;);
   // set value = &#34;&#34;
   emptyOption.setAttribute(&#34;value&#34;,&#34;&#34;);
@@ -372,7 +372,7 @@ originalSelect.getElementsByTagName(&#34;optgroup&#34;);
   select1.appendChild(emptyOption);
 
 <strong>  // make not applicable option
-  var naOption = 
+  var naOption =
       document.createElement(&#34;option&#34;);
   // set value = &#34;N/A&#34;
   naOption.setAttribute(&#34;value&#34;,&#34;N/A&#34;);
@@ -386,22 +386,22 @@ originalSelect.getElementsByTagName(&#34;optgroup&#34;);
 <p>One more problem we run into is that <acronym lang="en" title="Internet Explorer">IE</acronym> 5.x on Windows has problems (like I need to tell you). Basically, it balks on collecting <code>&#60;option&#62;</code>s within an <code>&#60;optgroup&#62;</code>. To deal with this bit of ridiculousness, we add the following lines into <code>splitOptgroupSelect</code> and the function will just end prematurely, leaving the original <code>&#60;select&#62;</code> with its lovely, accessible <code>&#60;optgroup&#62;</code>s intact:</p>
 
 <pre>  &#8230;
- 
+
     // extract the label
     var label = optgroup.label;
- 
-<strong>    // IE 5.x doesnot allow us to collect these 
+
+<strong>    // IE 5.x doesnot allow us to collect these
     // options so we need to stop
     if
-(optgroup.getElementsByTagName(&#34;option&#34;).length 
+(optgroup.getElementsByTagName(&#34;option&#34;).length
 == 0)
     {
       return null;
     }</strong>
-        
+
     // make an array of its options
     select2Options[label] = new Array;
- 
+
   &#8230;</pre>
 
 <p>Now that that&#8217;s taken care of, we can get back on track and add in some behavior.</p>
@@ -409,7 +409,7 @@ originalSelect.getElementsByTagName(&#34;optgroup&#34;);
 <p>So we want to make the second <code>&#60;select&#62;</code> dependent on the first one. We&#8217;ve already collected the <code>&#60;option&#62;</code>s for each <code>&#60;optgroup&#62;</code> into an array, but there&#8217;s one problem, we need that information not to be limited to the <code>splitOptgroupSelect</code> function. So let&#8217;s move our variable declaration for <var>select2Options</var> outside the function:</p>
 
 <pre><strong>var select2Options = new Array;</strong>
- 
+
 function splitOptgroupSelect()
 {
   &#8230;
@@ -419,28 +419,28 @@ function splitOptgroupSelect()
 
 <pre>function changeOptions()
 {
-  // find the first select<br />  var select1Obj = 
+  // find the first select<br />  var select1Obj =
       document.getElementById(&#34;locState&#34;);
   // find the second select
-  var select2Obj = 
+  var select2Obj =
       document.getElementById(&#34;location&#34;);
-  
+
   // collect the value of the selected state
-  var select1SelectedOption = 
+  var select1SelectedOption =
 select1Obj.options[select1Obj.selectedIndex].value;
-  
+
   // get the array of options for it
   var newOptions = new Array;
-  newOptions = 
+  newOptions =
     select2Options[select1SelectedOption];
-  
+
   // remove existing options from the select
   removeContents(select2Obj);
-  
+
   if (select1SelectedOption == &#34;N/A&#34;)
   {
     // make not applicable option
-    var newOption = 
+    var newOption =
         document.createElement(&#34;option&#34;);
     newOption.setAttribute(&#34;value&#34;,&#34;N/A&#34;);
     newOption.setAttribute(&#34;selected&#34;,
@@ -448,35 +448,35 @@ select1Obj.options[select1Obj.selectedIndex].value;
     newOption.innerHTML = &#34;Not Applicable&#34;;
     select2Obj.appendChild(newOption);
   } else { // add a blank 1st option
-    var emptyOption = 
+    var emptyOption =
         document.createElement(&#34;option&#34;);
     emptyOption.setAttribute(&#34;value&#34;,&#34;&#34;);
-    // if the selected option is empty, 
+    // if the selected option is empty,
     // revert to the &#60;--
     if (select1SelectedOption == &#34;&#34;)
     {
       emptyOption.innerHTML = &#34;&#60;--&#34;;
     } else {
-      emptyOption.innerHTML = 
+      emptyOption.innerHTML =
         &#34;Select a Location&#34;;
     }
     select2Obj.appendChild(emptyOption);
   }
   if ((select1SelectedOption == &#34;&#34;) ||
-      (select1SelectedOption == &#34;N/A&#34;)) 
+      (select1SelectedOption == &#34;N/A&#34;))
       // there&#8217;s nothing else to do, stop now
   {
     return null;
   }
-  
+
   // attach the new options to the select
   for (i = 0; i < newOptions.length; i++)
   {
-    var newOption = 
+    var newOption =
         document.createElement("option");
     newOption.setAttribute("value",
              newOptions[i]["value"]);
-    newOption.innerHTML = 
+    newOption.innerHTML =
       newOptions[i]["text"];
     select2Obj.appendChild(newOption);
   }

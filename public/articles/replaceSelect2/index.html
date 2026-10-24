@@ -9,25 +9,25 @@
   <meta name="ROBOTS" content="ALL" />
   <meta name="Copyright" content="(CC) 1999-2026 Easy Designs, LLC. Except where otherwise noted, this site is licensed under a Creative Commons License." />
   <meta http-equiv="imagetoolbar" content="no" />
-  <meta name="Rating" content="General" /> 
+  <meta name="Rating" content="General" />
   <link rel="stylesheet" type="text/css" media="screen" href="/css/basic.css" />
   <link rel="stylesheet" type="text/css" media="screen, projection" href="/css/advanced.css" />
-  <link rel="stylesheet" type="text/css" media="print" href="/css/print.css" /> 
-  <link rel="shortcut icon" type="image/ico" href="/favicon.svg" /> 
-  <link rel="copyright" href="/license.php" /> 
-  <!--script type="text/javascript" src="/scripts/jsUtilities.js"></script-->
+  <link rel="stylesheet" type="text/css" media="print" href="/css/print.css" />
+  <link rel="shortcut icon" type="image/ico" href="/favicon.svg" />
+  <link rel="copyright" href="/license.php" />
+  <script type="text/javascript" src="/scripts/jsUtilities.js"></script>
   <script type="text/javascript" src="/scripts/main.js"></script>
   <script type="text/javascript" src="/scripts/pageGlossary.js"></script>
   <script type="text/javascript" src="/scripts/footnoteLinks.js"></script>
-  
+
 </head>
 <body><aside class="archive-notice" role="note" style="position:relative;z-index:10000;padding:1em;background:#fff7d6;color:#222;font:16px/1.5 sans-serif"><strong>Historical archive.</strong> This site is preserved for reference. Services, registrations, payments, and server-backed demonstrations are no longer offered here.</aside>
 <div id="content">
   <h1><code>&#60;select&#62;</code> Something New, Part 2</h1>
   <h3>By Aaron Gustafson</h3>
-  
+
   <p>When we last left our faux-<code>&#60;select&#62;</code>, we had a <a href="/articles/replaceSelect/files/final.html">highly usable select replacement</a>, but it wasn&#8217;t quite as accessible as it should be. In order to make the faux-<code>&#60;select&#62;</code> truly accessible, users need to be able to use it with more than just a mouse. Keyboard controls are the most widely supported mouse alternative, so this article will address supporting them within the framework of our faux-<code>&#60;select&#62;</code>.</p>
-  
+
   <h2>Setting the stage</h2>
   <p>In order to best demonstrate this technique in action, we should start with a <a href="/articles/replaceSelect2/files/1.html">more complete form example</a>. Our goal is to support keyboard control for our faux-<code>&#60;select&#62;</code>, which translates to the following specific goals:</p>
   <ol>
@@ -93,15 +93,15 @@
   <p>which removes it from sight, but keeps it <kbd>tab</kbd>-able.</p>
 
   <p>Now that <a href="/articles/replaceSelect2/files/3.html">we can <kbd>tab</kbd> to the replaced <code>&#60;select&#62;</code></a>, we can go about adding the behavior necessary to offer the user a visual cue that the faux-<code>&#60;select&#62;</code> is active. We can do this in our <code>selectReplacement</code> function by having the select add a class to the faux-<code>&#60;select&#62;</code> <code>&#60;ul&#62;</code> when the replaced select (<var>obj</var>) is focused, and resetting the class on the <code>&#60;ul&#62;</code> when the <code>&#60;select&#62;</code> is blurred:</p>
-  
+
   <pre class="script"><code>function selectReplacement(obj) {
   &#8230;
-  <strong>// add the selectFocused class to the faux-&#60;select&#62; 
+  <strong>// add the selectFocused class to the faux-&#60;select&#62;
   // when the real &#60;select&#62; is focused
   obj.onfocus = function() {
     ul.className += ' selectFocused';
   };
-  // reset the class on the faux-&#60;select&#62; 
+  // reset the class on the faux-&#60;select&#62;
   // when the real &#60;select&#62; is blurred
   obj.onblur = function() {
     ul.className = 'selectReplacement';
@@ -121,7 +121,7 @@
 
   <pre class="script"><code>function selectReplacement(obj) {
   &#8230;
-  <strong>// when the user changes the item within the &#60;select&#62;, 
+  <strong>// when the user changes the item within the &#60;select&#62;,
   // update the faux-&#60;select&#62; accordingly
   obj.onchange = function() {
     // get the selectedIndex and...
@@ -156,7 +156,7 @@ Using the keyboard or an assistive technology that emulates the keyboard, select
   </blockquote>
   <p>What&#8217;s a web developer to do? Well, it is my opinion that in the case of a conflict between the <abbr title="specification">spec</abbr> and accessibility, assuming a good case can be made for the accessibility side, accessibility should win.</p>
   <p>That said, we need a way to make <a href="http://www.mozilla.org/">Mozilla</a> browsers behave like the other browsers do, so we can tie into the <code>onchange</code> event of the original <code>&#60;select&#62;</code>. At first, I created a function to run when the <code>onkeydown</code> event took place on the <code>&#60;select&#62;</code>. It checked for certain keys (<kbd>up</kbd>, <kbd>down</kbd>, <kbd>left</kbd>, <kbd>right</kbd>, <kbd>home</kbd>, <kbd>end</kbd>, <abbr lang="la" title="et cetera meaning &#8220;and so forth&#8221;">etc.</abbr>) and then triggered the faux-<code>&#60;select&#62;</code> to change the displayed list item accordingly:</p>
-  
+
   <pre class="script"><code>function selectReplacement(obj) {
   ...
   // when a key is pressed, get its keyCode and perform
@@ -190,7 +190,7 @@ Using the keyboard or an assistive technology that emulates the keyboard, select
       case 35: // end
         selectMe(ul.lastChild);
         break;
-    } 
+    }
   };
   &#8230;
 }</code></pre>
@@ -206,7 +206,7 @@ Using the keyboard or an assistive technology that emulates the keyboard, select
 }</code></pre>
 
   <p>It&#8217;s my experience that the simplest solutions often aren&#8217;t the most obvious and forthcoming ones, at least not in my brain.</p>
-  
+
   <h2>Conclusion</h2>
   <p>All told, <a href="/articles/replaceSelect2/files/final.html">making the faux-<code>&#60;select&#62;</code> more accessible</a> is not all that taxing (apart from working around a few browser deficiencies/idiosyncrasies). It just goes to show that accessibility can be a quick win if you make smart decisions.</p>
   <p>As mentioned in <a href="/articles/replaceSelect/">Part 1</a>, we&#8217;re not stopping here: Part 3 will explore a faux-<code>&#60;select&#62;</code> with organizational <code>&#60;optgroup&#62;</code>s and Part 4 will examine a faux multiple-<code>&#60;select&#62;</code>s. We received an email asking for a Part 5, to address the creation of a combo box (a <code>&#60;select&#62;</code> which switches to an input when you select a value like &#8220;other&#8221;), and we&#8217;ve decided to grant that request, so there is even more to come in this series. I better get cracking.</p>
@@ -217,14 +217,9 @@ Using the keyboard or an assistive technology that emulates the keyboard, select
   </div>
 </div>
   <div id="footer">
-      <p class="copyright"><a id="cc" href="http://creativecommons.org/licenses/by-sa/2.0/" title="View the Creative Commons license for this page">(CC)</a> 1999-2026 Easy Designs, LLC. Except where otherwise <a href="/license.php">noted</a>, this site is licensed under a <a href="http://creativecommons.org/">Creative Commons</a> License.</p> 
-  </div> 
-  <script type="text/javascript">
-    // <![CDATA[
-    _uacct = 'UA-176472-1';
-    urchinTracker();
-    // ]]>
-  </script> 
+      <p class="copyright"><a id="cc" href="http://creativecommons.org/licenses/by-sa/2.0/" title="View the Creative Commons license for this page">(CC)</a> 1999-2026 Easy Designs, LLC. Except where otherwise <a href="/license.php">noted</a>, this site is licensed under a <a href="http://creativecommons.org/">Creative Commons</a> License.</p>
+  </div>
+
 
 </body>
 </html>

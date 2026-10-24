@@ -9,22 +9,22 @@
   <meta name="ROBOTS" content="ALL" />
   <meta name="Copyright" content="(CC) 1999-2026 Easy Designs, LLC. Except where otherwise noted, this site is licensed under a Creative Commons License." />
   <meta http-equiv="imagetoolbar" content="no" />
-  <meta name="Rating" content="General" /> 
+  <meta name="Rating" content="General" />
   <link rel="stylesheet" type="text/css" media="screen" href="/css/basic.css" />
   <link rel="stylesheet" type="text/css" media="screen, projection" href="/css/advanced.css" />
-  <link rel="stylesheet" type="text/css" media="print" href="/css/print.css" /> 
-  <link rel="shortcut icon" type="image/ico" href="/favicon.svg" /> 
-  <link rel="copyright" href="/license.php" /> 
-  <!--script type="text/javascript" src="/scripts/jsUtilities.js"></script-->
+  <link rel="stylesheet" type="text/css" media="print" href="/css/print.css" />
+  <link rel="shortcut icon" type="image/ico" href="/favicon.svg" />
+  <link rel="copyright" href="/license.php" />
+  <script type="text/javascript" src="/scripts/jsUtilities.js"></script>
   <script type="text/javascript" src="/scripts/main.js"></script>
   <script type="text/javascript" src="/scripts/pageGlossary.js"></script>
   <script type="text/javascript" src="/scripts/footnoteLinks.js"></script>
-  
+
 </head>
 <body><aside class="archive-notice" role="note" style="position:relative;z-index:10000;padding:1em;background:#fff7d6;color:#222;font:16px/1.5 sans-serif"><strong>Historical archive.</strong> This site is preserved for reference. Services, registrations, payments, and server-backed demonstrations are no longer offered here.</aside>
 <div id="content">
   <h1>IE box model + float = duplicated text</h1>
-  
+
   <h2>The problem</h2>
   <p>If you are floating elements within a box (in this case <code>&#60;label&#62;</code>s within a <code>&#60;fieldset&#62;</code>), <abbr title="Internet Explorer 6 on Windows">Win/IE6</abbr> appears to have a box model issue (even when rendering in &#8220;standards mode&#8221;) and will duplicate a portion of your text onto a new line:</p>
 
@@ -32,18 +32,13 @@
 
   <p>In this example, the width of the conatining <code>&#60;fieldset&#62;</code> is set to 410<abbr title="pixels">px</abbr>. Padding is set to 0<abbr title="pixels">px</abbr>, so the box has an inner width of 410<abbr title="pixels">px</abbr>. The <code>&#60;label&#62;</code>s are each set to 200<abbr title="pixels">px</abbr> wide, with a right-hand margin of 5<abbr title="pixels">px</abbr>. Floating two <code>&#60;label&#62;</code>s next to one another would yield a width of 410<abbr title="pixels">px</abbr> (200 + 5 + 200 + 5 = 410), thereby snuggly fitting within the container box.</p>
   <p>Note: if the elements you are floating do not reach the other side of the container, there is no problem (see the first <code>&#60;fieldset&#62;</code> in the <a href="bad.html" title="click to view the live demo [use Win/IE to see the error]">live demo</a> or above).</p>
-  
+
   <h2>The solution</h2>
   <p>Dropping the width or margin of the <code>&#60;label&#62;</code>s or increasing the width of the <code>&#60;fieldset&#62;</code> seems to <a href="good.html">get rid of the issue</a>. Oddly enough, in the above example, the issue disappears when the <code>&#60;label&#62;</code>s reach 196<abbr title="pixels">px</abbr> wide, meaning that that <abbr title="Internet Explorer 6 on Windows">Win/IE6</abbr> will keep the display issue until the floated elements are at least 8<abbr title="pixels">px</abbr> (410 - 196 - 5 - 196 - 5 = 8) away from the right-hand side of the container.</p>
 </div>
   <div id="footer">
-      <p class="copyright"><a id="cc" href="http://creativecommons.org/licenses/by-sa/2.0/" title="View the Creative Commons license for this page">(CC)</a> 1999-2026 Easy Designs, LLC. Except where otherwise <a href="/license.php">noted</a>, this site is licensed under a <a href="http://creativecommons.org/">Creative Commons</a> License.</p> 
-  </div> 
-  <script type="text/javascript">
-    // <![CDATA[
-    _uacct = 'UA-176472-1';
-    urchinTracker();
-    // ]]>
-  </script> 
+      <p class="copyright"><a id="cc" href="http://creativecommons.org/licenses/by-sa/2.0/" title="View the Creative Commons license for this page">(CC)</a> 1999-2026 Easy Designs, LLC. Except where otherwise <a href="/license.php">noted</a>, this site is licensed under a <a href="http://creativecommons.org/">Creative Commons</a> License.</p>
+  </div>
+
 </body>
 </html>

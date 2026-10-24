@@ -9,23 +9,23 @@
   <meta name="ROBOTS" content="ALL" />
   <meta name="Copyright" content="(CC) 1999-2026 Easy Designs, LLC. Except where otherwise noted, this site is licensed under a Creative Commons License." />
   <meta http-equiv="imagetoolbar" content="no" />
-  <meta name="Rating" content="General" /> 
+  <meta name="Rating" content="General" />
   <link rel="stylesheet" type="text/css" media="screen" href="/css/basic.css" />
   <link rel="stylesheet" type="text/css" media="screen, projection" href="/css/advanced.css" />
-  <link rel="stylesheet" type="text/css" media="print" href="/css/print.css" /> 
-  <link rel="shortcut icon" type="image/ico" href="/favicon.svg" /> 
-  <link rel="copyright" href="/license.php" /> 
-  <!--script type="text/javascript" src="/scripts/jsUtilities.js"></script-->
+  <link rel="stylesheet" type="text/css" media="print" href="/css/print.css" />
+  <link rel="shortcut icon" type="image/ico" href="/favicon.svg" />
+  <link rel="copyright" href="/license.php" />
+  <script type="text/javascript" src="/scripts/jsUtilities.js"></script>
   <script type="text/javascript" src="/scripts/main.js"></script>
   <script type="text/javascript" src="/scripts/pageGlossary.js"></script>
   <script type="text/javascript" src="/scripts/footnoteLinks.js"></script>
-  
+
 </head>
 <body><aside class="archive-notice" role="note" style="position:relative;z-index:10000;padding:1em;background:#fff7d6;color:#222;font:16px/1.5 sans-serif"><strong>Historical archive.</strong> This site is preserved for reference. Services, registrations, payments, and server-backed demonstrations are no longer offered here.</aside>
 <div id="content">
   <h1>Get a Speed Boost from the Bitwise Operator</h1>
   <h3>By Dave Stewart</h3>
-  
+
   <p>Be it ActionScript or <abbr title="PHP: the Hypertext PreProcessor">PHP</abbr>, we all find ourselves re-using code snippets we learned (or &#8220;borrowed&#8221;) at some point during the development of an application.  Why re-invent the wheel, right?</p>
   <p>Whenever I have a little down time, though, I experiment with new things (as I am sure we all do) or go back and study code that I know works to optimize/improve upon it. Sometimes while researching something, I get off on a tangent and eventually end up unearthing a bit of programming which is very helpful, but often overlooked.</p>
   <p>This happened recently when I was building a Flash game and wrote some code to alternate through squares in a grid system. It seemed rather slow, so I started searching for a better solution. I blew the dust off the Bitwise operator (<code>&amp;</code>) and researched what it actually does. I think the reason it was dusty was because of descriptions like this one (from the Flash 8 docs):</p>
@@ -35,11 +35,11 @@
       <dd>Converts <var>expression1</var> and <var>expression2</var> to 32-bit unsigned integers, and performs a Boolean AND operation on each bit of the integer parameters. Floating-point numbers are converted to integers by discarding any digits after the decimal point. The result is a new 32-bit integer.</dd>
     </dl>
   </blockquote>
-  
+
   <p>How could <em>that</em> be useful?</p>
   <p>Let&#8217;s translate this jibberish into something that can save our overworked <abbr title="Central Processing Units">CPUs</abbr> some cycles. As you&#8217;ll soon see, the bitwise operator can be used in many programming languages.</p>
   <p>Below are two examples. The first is one I have written (and re-written) dozens of times in <abbr title="PHP: the Hypertext PreProcessor">PHP</abbr> &#8211; it alternates between colors on <abbr title="(eXtensible) HyperText Markup Language">(X)HTML</abbr> <code>table</code> rows from a MySQL query. The second is the ActionScript required to make a chessboard.  These examples are very specific, but this technique can be adapted to any situation in which you want to cycle through <code>for</code> or <code>while</code> loops to find odd or even numbers or trigger on/off switches.</p>
-    
+
   <h2>Exhibit A: Stripey tables in PHP</h2>
   <pre class="script"><code>&#60;table&#62;
   &#60;thead&#62;
@@ -74,7 +74,7 @@
   &#60;tbody&#62;
 &#60;/table&#62;</code></pre>
 
-  <p>Pretty standard stuff right? Now take a look at this line: 
+  <p>Pretty standard stuff right? Now take a look at this line:
 
   <pre class="script"><code>    &#8230;
     $row_color = ($row_count % 2) ? $color1 : $color2;
@@ -104,11 +104,11 @@
   </ul>
   <p>Each odd number has a binary equivalent with a 1 in the last column, and even numbers have binary equivalents with 0 there. So let&#8217;s look for that pattern instead, doing simple comparisons instead of calculations for each iteration.</p>
   <p>To do this, we just modify the statement to look like this:</p>
-  
+
   <pre class="script"><code>    &#8230;
     $row_color = ( ( $row_count &amp; 1 ) == 0 ) ? $color1 : $color2;
     &#8230;</code></pre>
-  
+
   <p>What this does is mask <var>$row_count</var> with a 1 and you can see if it is even.</p>
   <ul>
     <li>1024 &rarr; 10000000000</li>
@@ -119,7 +119,7 @@
 
   <pre class="script"><code>$mySwitch = ($counter &amp; 1);
 $counter++;</code></pre>
-    
+
   <h2>Exhibit B: Chessboard in ActionScript</h2>
   <p>Here is a 100% ActionScript Chessboard. It could be modified to <abbr title="PHP: the Hypertext PreProcessor">PHP</abbr>/<abbr title="(eXtensible) HyperText Markup Language">(X)HTML</abbr> to make a checkered table, but that might look a little crazy.</p>
   <p><em>Note:</em> We&#8217;re using <abbr title="ActionScript">AS</abbr> best practices here, keeping our code as portable as possible by using objects.</p>
@@ -143,7 +143,7 @@ var chessBoard = new chessboard( w, h, 8 );</code></pre>
   private var depth:Number;
   private var i:Number;
   private var j:Number;
-  
+
   // Constructor
   public function chessboard( w:Number, h:Number, divider:Number ){
     this.__w = w;
@@ -159,7 +159,7 @@ var chessBoard = new chessboard( w, h, 8 );</code></pre>
         depth = _root.chessboard_mc.getNextHighestDepth();
         var square = _root.chessboard_mc.createEmptyMovieClip( "square" + depth + "_mc", depth );
         // Our Bitwise &amp; to make Black or White squares
-        var addSquare:Boolean = ( (counter &amp; 1) == 0 ) ? fill( square, 0xFFFFFF ) 
+        var addSquare:Boolean = ( (counter &amp; 1) == 0 ) ? fill( square, 0xFFFFFF )
                                                        : fill( square, 0x000000 );
         square._x = j * __divider;
         square._y = i * __divider;
@@ -190,14 +190,9 @@ var chessBoard = new chessboard( w, h, 8 );</code></pre>
   </div>
 </div>
   <div id="footer">
-      <p class="copyright"><a id="cc" href="http://creativecommons.org/licenses/by-sa/2.0/" title="View the Creative Commons license for this page">(CC)</a> 1999-2026 Easy Designs, LLC. Except where otherwise <a href="/license.php">noted</a>, this site is licensed under a <a href="http://creativecommons.org/">Creative Commons</a> License.</p> 
-  </div> 
-  <script type="text/javascript">
-    // <![CDATA[
-    _uacct = 'UA-176472-1';
-    urchinTracker();
-    // ]]>
-  </script> 
+      <p class="copyright"><a id="cc" href="http://creativecommons.org/licenses/by-sa/2.0/" title="View the Creative Commons license for this page">(CC)</a> 1999-2026 Easy Designs, LLC. Except where otherwise <a href="/license.php">noted</a>, this site is licensed under a <a href="http://creativecommons.org/">Creative Commons</a> License.</p>
+  </div>
+
 
 </body>
 </html>

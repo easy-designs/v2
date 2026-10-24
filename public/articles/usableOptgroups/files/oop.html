@@ -55,17 +55,17 @@
       this.fieldsetObj.id = fieldsetId;
       this.fieldsetObj.legend = newLegend;
       this.fieldsetObj.removeContents = removeContents;
-      
+
       // set up the initial select
       this.originalSelect = new Object;
       this.originalSelect.id = selectId;
-      
+
       // set up the new select
       this.firstNewSelectObj = new Object;
       this.firstNewSelectObj.id = newSelect1Id;
       this.firstNewSelectObj.text = newSelect1Txt;
       this.firstNewSelectObj.label = newSelect1Label;
-      
+
       // set up redone original select
       this.secondNewSelectObj = new Object;
       this.secondNewSelectObj.activeText = newSelect2Txt;
@@ -75,13 +75,13 @@
       // these are the overarching variables
       this.newClass = newClass;
       this.notApplicable = notApplicable;
-      
+
       // these are our functions
       this.splitOptgroupSelect = splitOptgroupSelect;
       //var thisObj = this;
       //this.changeOptions = changeOptions;
     }
-    
+
     function optionTag(value,textValue,selected)
     {
       this.value = value;
@@ -91,56 +91,56 @@
       this.tag.setAttribute("value",value);
       if (this.selected == true)
       {
-        this.tag.setAttribute("selected","selected");  
+        this.tag.setAttribute("selected","selected");
       }
       this.tag.innerHTML = this.textValue;// set the text node value
     }
-    
+
     function splitOptgroupSelect()
     {
       // make sure document.getElementById & document.getElementByTagName are understood first
       if (!document.getElementsByTagName && !document.getElementById) {
         return null;
       }
-      
+
       // set the id for the fieldset and the original select
       var fieldsetObj = document.getElementById(this.fieldsetObj.id);
       var originalSelect = document.getElementById(this.originalSelect.id);
-      
+
       // make sure we can add/remove options - thanks PPK!
-	  lgth = originalSelect.options.length - 1;
-	  originalSelect.options[0] = null;
+      lgth = originalSelect.options.length - 1;
+      originalSelect.options[0] = null;
       if (originalSelect.options[lgth])
       {
         return null;
       }
-      
+
       // break out the optgroups into an array
       var optgroups = fieldsetObj.getElementsByTagName("optgroup");
-      
+
       // create the state select dropdown
       var select1 = document.createElement("select");
       select1.setAttribute("name",this.firstNewSelectObj.id);
       select1.setAttribute("id",this.firstNewSelectObj.id);
-      
+
       // create an empty first option
       var emptyOption = new optionTag("",this.firstNewSelectObj.text,true);
       // attach text to option & option to select
       select1.appendChild(emptyOption.tag);
-      
+
       // make not applicable option
       if (this.notApplicable)
       {
         var naOption = new optionTag("N/A","Not Applicable",false);
         select1.appendChild(naOption.tag);
       }
-      
+
       // loop through the optgroup array
       for(var i=0; i < optgroups.length; i++)
       {
         // take 1 optgroup at a time
         var optgroup = optgroups[i];
-        
+
         // extract the label
         var label = optgroup.label;
 
@@ -149,7 +149,7 @@
         {
           return null;
         }
-        
+
         // make an array of its options
         this.secondNewSelectObj.newOptions[label] = new Array;
         var options = optgroup.getElementsByTagName("option");
@@ -159,26 +159,26 @@
           this.secondNewSelectObj.newOptions[label][j]["value"] = options[j]["value"];
           this.secondNewSelectObj.newOptions[label][j]["text"] = options[j].innerHTML;
         }
-        
+
         // create an option of this state
         var select1Option = new optionTag(label,label,false);
         // connect option to select
         select1.appendChild(select1Option.tag);
       }
-      
+
       // create a select for the locations
       var select2 = document.createElement("select");
       select2.setAttribute("name",this.originalSelect.id);
       select2.setAttribute("id",this.originalSelect.id);
-      
+
       // add a placeholder option & attach
       var select2Option = new optionTag(label,"&#60;--",true);
       select2.appendChild(select2Option.tag);
-      
+
       // create the new legend
       var newLegend = document.createElement("legend");
       newLegend.innerHTML = this.fieldsetObj.legend;
-      
+
       // assign some state and location labels
       var select1Label = document.createElement("label");
       select1Label.innerHTML = this.firstNewSelectObj.label;
@@ -186,21 +186,21 @@
       var select2Label = document.createElement("label")
       select2Label.innerHTML = this.secondNewSelectObj.label;
       select2Label.className = this.newClass;
-     
+
       // attach the selects to the labels
       select1Label.appendChild(select1);
       select2Label.appendChild(select2);
-      
+
       // now replace the existing content of the fieldset with our new content
       removeContents(fieldsetObj);
       fieldsetObj.appendChild(newLegend);
       fieldsetObj.appendChild(select1Label);
       fieldsetObj.appendChild(select2Label);
-      
+
       select1.attachEvent('onchange',"changeOptions('" + this.firstNewSelectObj.newOptions +
-                                                    "','" + this.secondNewSelectObj.id + 
-                                                    "','" + this.secondNewSelectObj.newOptions + 
-                                                    "','" + this.secondNewSelectObj.activeText + 
+                                                    "','" + this.secondNewSelectObj.id +
+                                                    "','" + this.secondNewSelectObj.newOptions +
+                                                    "','" + this.secondNewSelectObj.activeText +
                                                     "')");
 
     }
@@ -209,17 +209,17 @@
     {
       var select1Obj = document.getElementById(select1);
       var select2Obj = document.getElementById(select2);
-      
+
       // collect the value of the selected state
       var select1SelectedOption = select1Obj.options[select1Obj.selectedIndex].value;
-      
+
       // get the array of options for it
       var newOptions = new Array;
       newOptions = this.optionArray[select1SelectedOption];
-      
+
       // remove existing options from the select
       removeContents(select2Obj);
-      
+
       // make not applicable option
       if (select1SelectedOption == "N/A")
       {
@@ -259,7 +259,7 @@
     }
 
     var locSelect = new optgroupSelect("locationsSet","location","Restaurant Location <em>(if applicable)</em>","locState","Select a State","State","Now Select a Location","Location","small",true);
-    
+
     window.onload = function()
     {
       if (!browser.isIEMac)
@@ -271,6 +271,6 @@
   </script>
 </head>
 <body><aside class="archive-notice" role="note" style="position:relative;z-index:10000;padding:1em;background:#fff7d6;color:#222;font:16px/1.5 sans-serif"><strong>Historical archive.</strong> This site is preserved for reference. Services, registrations, payments, and server-backed demonstrations are no longer offered here.</aside>
-  <p class="archive-form-notice">This historical form is no longer accepting submissions.</p> 
+  <p class="archive-form-notice">This historical form is no longer accepting submissions.</p>
 </body>
 </html>

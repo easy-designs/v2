@@ -141,7 +141,7 @@
             this.className += ' hover';
           };
           li.onmouseout = function() {
-            this.className = 
+            this.className =
               this.className.replace(new RegExp(" hover\\b"), '');
           };
         }
@@ -187,7 +187,7 @@
           case 35: // end
             selectMe(ul.lastChild);
             break;
-        } 
+        }
       };
       obj.parentNode.insertBefore(ul,obj);
     }
@@ -202,7 +202,7 @@
        } else {
           setVal(obj.selectID, obj.selIndex);
           obj.className='selected';
-          obj.parentNode.className = 
+          obj.parentNode.className =
             obj.parentNode.className.replace(new RegExp(" selectOpen\\b"), '');
           obj.onclick = function() {
             obj.parentNode.className += ' selectOpen';

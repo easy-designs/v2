@@ -109,7 +109,7 @@
             this.className += ' hover';
           }
           li.onmouseout = function() {
-            this.className = 
+            this.className =
               this.className.replace(new RegExp(" hover\\b"), '');
           }
         }
@@ -128,7 +128,7 @@
           }
        } else {
           obj.className='selected';
-          obj.parentNode.className = 
+          obj.parentNode.className =
             obj.parentNode.className.replace(new RegExp(" selectOpen\\b"), '');
           obj.onclick = function() {
             obj.parentNode.className += ' selectOpen';

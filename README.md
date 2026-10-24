@@ -29,6 +29,9 @@ links to the surviving client-side example. Old analytics were removed.
 Locally saved A List Apart and Digital Web articles retain their original
 external link bases instead of resolving those publishers' navigation here.
 
+The generated common pages load the existing jsUtilities prerequisite before
+the footnote scripts, restoring their original intended dependency order.
+
 The surviving repository did not contain the formSuite ZIP, working
 formSuite.js, custom DTD, or the advertised jsTrace 1.3 drag ZIP. Their links
 are explicitly marked unavailable, not replaced with incorrect versions. The

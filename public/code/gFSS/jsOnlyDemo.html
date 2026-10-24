@@ -109,25 +109,25 @@ var gFSS = {
             if( rule.indexOf( '-gfss-' ) != -1 ){
               var tmprule = rule.replace( /^-gfss-(\s*)/, "$1");; // remove the '-gfss-'
               switch( true ){
-                case ( tmprule == 'background-color' ): 
+                case ( tmprule == 'background-color' ):
                   b = block[rule];
                   break;
-                case ( tmprule == 'flash-version' ): 
+                case ( tmprule == 'flash-version' ):
                   v = block[rule];
                   break;
-                case ( tmprule == 'quality' ): 
+                case ( tmprule == 'quality' ):
                   q = block[rule];
                   break;
-                case ( tmprule == 'flash-vars' ): 
+                case ( tmprule == 'flash-vars' ):
                   f = block[rule];
                   break;
-                case ( tmprule == 'source' ): 
+                case ( tmprule == 'source' ):
                   s = block[rule].replace( /url\((.*?)\)/, "$1" );
                   break;
-                case ( tmprule == 'width' ): 
+                case ( tmprule == 'width' ):
                   w = block[rule];
                   break;
-                case ( tmprule == 'height' ): 
+                case ( tmprule == 'height' ):
                   h = block[rule];
                   break;
                 default:
@@ -354,11 +354,11 @@ function trace( msg ){
 function dump( arr, level ){
   var dumped_text = "";
   if(!level) level = 0;
-  
+
   //The padding given at the beginning of the line.
   var level_padding = "";
   for(var j=0;j<level+1;j++) level_padding += "    ";
-  
+
   if( typeof(arr) == 'object' ){ //Array/Hashes/Objects
     for( var item in arr ){
       var value = arr[item];

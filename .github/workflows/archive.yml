@@ -22,6 +22,8 @@ jobs:
           root = Path("public")
           assert (root / "index.html").is_file(), "Missing archive home"
           assert (root / "_redirects").is_file(), "Missing legacy redirects"
+          for private in ("public", "netlify.toml", "migration-manifest.json"):
+              assert not (root / private).exists(), f"Unexpected source/output copy: {private}"
           files = [path for path in root.rglob("*") if path.is_file()]
           assert sum(path.stat().st_size for path in files) < 950_000_000
           for path in files:

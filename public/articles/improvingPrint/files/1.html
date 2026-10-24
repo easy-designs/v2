@@ -20,11 +20,11 @@
     Homepage:       http://www.easy-designs.net/code/footnoteLinks/
     License:        Creative Commons Attribution-ShareAlike 2.0 License
                     http://creativecommons.org/licenses/by-sa/2.0/
-    Note:           This version has reduced functionality as it is a demo of 
+    Note:           This version has reduced functionality as it is a demo of
                     the script's development
     ------------------------------------------------------------------------------*/
     function footnoteLinks(containerID,targetID) {
-      if (!document.getElementById || 
+      if (!document.getElementById ||
           !document.getElementsByTagName ||
           !document.createElement) return false;
       if (!document.getElementById(containerID) ||
@@ -43,14 +43,14 @@
       var num = 1;
       for (var i=0; i<coll.length; i++) {
         if ( coll[i].getAttribute('href') ||
-             coll[i].getAttribute('cite') ) { 
+             coll[i].getAttribute('cite') ) {
           thisLink = coll[i].getAttribute('href') ? coll[i].href : coll[i].cite;
           var note = document.createElement('sup');
           addClass.apply(note,['printOnly']);
           var note_txt;
           var j = inArray.apply(myArr,[thisLink]);
           if ( j || j===0 ) { // if a duplicate
-            // get the corresponding number from 
+            // get the corresponding number from
             // the array of used links
             note_txt = document.createTextNode(j+1);
           } else { // if not a duplicate
@@ -113,7 +113,7 @@
         oScope.__applyTemp__ = this;
         rtrn = eval(call);
         oScope.__applyTemp__ = null;
-    	return rtrn;
+        return rtrn;
       };
     };
     function inArray(needle) {
@@ -136,7 +136,7 @@
       var contentCntnr = ['p','li','dd'];
       while (testChild.nodeType != 1) {
         testChild = testChild.previousSibling;
-      } 
+      }
       var tag = testChild.tagName.toLowerCase();
       var tagInArr = inArray.apply(contentCntnr, [tag]);
       if (!tagInArr && tagInArr!==0) {
@@ -156,7 +156,7 @@
   <div id="content">
   <h1>Sample file</h1>
   <p>Below is a section excerpt from <a href="http://www.easy-designs.net/articles/replaceSelect2">&#60;select&#62; Something New, Part 2</a> containing links, blockquotes and blockquotes containing definition lists. View the print preview to see what our script has done.</p>
-  
+
   <h3>Aside: the <code>&#60;select&#62;</code> and <code>onchange</code></h3>
   <p>I prefer to do much of my initial development testing in <a href="http://www.mozilla.org/products/firefox/">Firefox</a>, primarily because I find the <a href="http://chrispederick.com/work/firefox/webdeveloper/">Web Developer Toolbar</a>, <a href="https://addons.update.mozilla.org/extensions/moreinfo.php?application=firefox&#38;category=Developer%20Tools&#38;numpg=10&#38;id=271">ColorZilla</a>, JavaScript Console and <a href="http://www.mozilla.org/projects/inspector/"><abbr title="Document Object Model">DOM</abbr> Inspector</a> to be indispensable tools. For the most part, <a href="http://www.mozilla.org/products/firefox/">Firefox</a> (and <a href="http://www.mozilla.org/">Mozilla</a> browsers in general) has great support for web standards and accessibility, but I did come across one oddity that threw me for a loop. It seems <a href="http://www.mozilla.org/">Mozilla</a> has the only family of modern browsers (in my experience, at least) which does not register the <code>onchange</code> event when the keyboard is used to change the value of a <code>&#60;select&#62;</code>. These browsers only register an <code>onchange</code> event when focus is taken away from the <code>&#60;select&#62;</code>. This follows the guidelines in the <a href="http://www.w3.org/TR/html401/"><abbr title="HyperText Markup Language">HTML</abbr> 4.01 <abbr title="specification">spec</abbr></a>:</p>
 
@@ -184,7 +184,7 @@ Using the keyboard or an assistive technology that emulates the keyboard, select
 
   <p>That said, we need a way to make <a href="http://www.mozilla.org/">Mozilla</a> browsers behave like the other browsers do, so we can tie into the <code>onchange</code> event of the original <code>&#60;select&#62;</code>. At first, I created a function to run when the <code>onkeydown</code> event took place on the <code>&#60;select&#62;</code>. It checked for certain keys (<kbd>up</kbd>, <kbd>down</kbd>, <kbd>left</kbd>, <kbd>right</kbd>, <kbd>home</kbd>, <kbd>end</kbd>, <abbr lang="la" title="et cetera meaning &#8220;and so forth&#8221;">etc.</abbr>) and then triggered the faux-<code>&#60;select&#62;</code> to change the displayed list item accordingly:</p>
 
-  
+
   <pre class="script"><code>function selectReplacement(obj) {
   ...
   // when a key is pressed, get its keyCode and perform
@@ -218,7 +218,7 @@ Using the keyboard or an assistive technology that emulates the keyboard, select
       case 35: // end
         selectMe(ul.lastChild);
         break;
-    } 
+    }
   };
   &#8230;
 }</code></pre>
